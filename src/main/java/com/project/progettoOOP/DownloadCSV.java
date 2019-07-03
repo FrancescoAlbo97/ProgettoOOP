@@ -43,7 +43,7 @@ public class DownloadCSV {
                 String format = (String) o1.get("format");
                 String urlD = (String) o1.get("url");
                 if (format.contains("CSV")) {
-                    downloadFile(urlD, "file.csv");
+                    downloadFile(urlD, "data.csv");
                 }
             }
         }

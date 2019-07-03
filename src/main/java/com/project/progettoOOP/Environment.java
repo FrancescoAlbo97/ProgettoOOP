@@ -81,7 +81,7 @@ public class Environment implements Serializable {
         O3 = o3;
         CO = co;
     }
-/*
+
     public Environment(Date date_time, float no, float no2, float nOx, float so2, float o3, float co){
         this.date_time = date_time;
         NO = no;
@@ -90,7 +90,7 @@ public class Environment implements Serializable {
         SO2 = so2;
         O3 = o3;
         CO = co;
-    }*/
+    }
 
     public Environment(){}
 
