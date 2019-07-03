@@ -25,7 +25,7 @@ public class ParserCSV {
 
                 records.add(Arrays.asList(values));
                 v.add(new Environment(Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[1]))); //values[0], values[1], Integer.parseInt(values[2]), Integer.parseInt(values[3])
-                //System.out.println(v.toString());
+                System.out.println(v.toString());
                 //vector += values [0];
             }
             //br.close();
