@@ -1,7 +1,7 @@
-package com.example.progettoOOP.controllers;
+package com.project.progettoOOP.controllers;
 
-import com.example.progettoOOP.DownloadCSV;
-import com.example.progettoOOP.ParserCSV;
+import com.project.progettoOOP.DownloadCSV;
+import com.project.progettoOOP.ParserCSV;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

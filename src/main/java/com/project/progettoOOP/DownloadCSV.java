@@ -1,4 +1,4 @@
-package com.example.progettoOOP;
+package com.project.progettoOOP;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
