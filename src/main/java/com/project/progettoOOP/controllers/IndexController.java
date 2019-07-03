@@ -14,9 +14,9 @@ public class IndexController {
 
     @GetMapping
     public String download (Model model) throws Exception {
-        DownloadCSV.getJson();
+        DownloadCSV.getCSV();
         ParserCSV.parser("data.csv");
-        model.addAttribute("json", ParserCSV.vector );
+        model.addAttribute("test", ParserCSV.vector );
         return "download";
     }
 

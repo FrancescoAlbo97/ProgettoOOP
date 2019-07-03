@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 public class DownloadCSV {
 
-    public static void getJson() throws Exception {
+    public static void getCSV() throws Exception {
 
         URLConnection openConnection = new URL("http://data.europa.eu/euodp/data/api/3/action/package_show?id=jrc-abcis-ig-2016").openConnection();
         //openConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
