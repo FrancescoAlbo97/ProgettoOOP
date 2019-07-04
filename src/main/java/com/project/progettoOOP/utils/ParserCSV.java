@@ -1,6 +1,7 @@
 package com.project.progettoOOP.utils;
 
 import com.project.progettoOOP.model.Environment;
+import com.project.progettoOOP.model.EnvironmentCollection;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,33 +15,26 @@ public class ParserCSV {
     final static String COMMA_DELIMITER = ",";
     public static String vector = " ";
 
-    public static void parser (String fileName) throws ParseException {
+    public static EnvironmentCollection parser (String fileName) throws ParseException {
 
         List<List<String>> records = new ArrayList<>();
         ArrayList<Environment> arrayList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             br.readLine();
-            int conta = 0;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(COMMA_DELIMITER);
-
                 records.add(Arrays.asList(values));
-
+                arrayList.add(new Environment(values[0],values[1],values[2],values[3],values[4],values[5], values[6]));
+                /*
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 Date date = formatter.parse(values[0]);
-
                 arrayList.add(new Environment(date, Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6])));
-                if (conta < 30){
-                    vector += arrayList.get(conta).toString();
-                    conta++;
-
-                }
+                */
             }
-            //br.close();
-        } catch (IOException i) {
-            i.printStackTrace();
-            return;
+        }
+        finally {
+            return new EnvironmentCollection(arrayList);
         }
     }
 }
