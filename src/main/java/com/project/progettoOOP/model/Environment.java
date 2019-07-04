@@ -1,4 +1,4 @@
-package com.project.progettoOOP;
+package com.project.progettoOOP.model;
 
 import java.io.Serializable;
 import java.util.Date;
