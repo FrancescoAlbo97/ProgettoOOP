@@ -1,6 +1,9 @@
 package com.project.progettoOOP.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Environment implements Serializable {
@@ -8,6 +11,7 @@ public class Environment implements Serializable {
     //Datetime and
     //Unvalidated 10 min averages in UTC time-base of NO, NO2, O3 and SO2, all in ppb, CO in ppm
 
+    @JsonPropertyDescription("Data e ora esatta")
     private Date date_time;
     private float NO;
     private float NO2;
@@ -72,24 +76,31 @@ public class Environment implements Serializable {
         this.CO = CO;
     }
 
-    public Environment(float no, float no2, float nOx, float so2, float o3, float co){
+    public Environment(float no, float no2, float nox, float so2, float o3, float co){
         //this.date_time = date_time;
         NO = no;
         NO2 = no2;
-        NOx = nOx;
+        NOx = nox;
         SO2 = so2;
         O3 = o3;
         CO = co;
     }
 
-    public Environment(Date date_time, float no, float no2, float nOx, float so2, float o3, float co){
+    public Environment(Date date_time, float no, float no2, float nox, float so2, float o3, float co){
         this.date_time = date_time;
         NO = no;
         NO2 = no2;
-        NOx = nOx;
+        NOx = nox;
         SO2 = so2;
         O3 = o3;
         CO = co;
+    }
+
+    public Environment(String date_time, String no, String no2, String nox, String so2, String o3, String co) throws ParseException {
+        this(Float.parseFloat(no), Float.parseFloat(no2), Float.parseFloat(nox), Float.parseFloat(so2), Float.parseFloat(o3), Float.parseFloat(co));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date date = formatter.parse(date_time);
+        this.date_time = date;
     }
 
     public Environment(){}
