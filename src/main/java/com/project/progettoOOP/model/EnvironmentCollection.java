@@ -7,7 +7,7 @@ import com.project.progettoOOP.utils.FilterUtils;
 import java.util.ArrayList;
 
 public class EnvironmentCollection implements Filter<Environment, Object[]> {
-/*
+
     @Override
     public String toString() {
         String line = "";
@@ -19,7 +19,7 @@ public class EnvironmentCollection implements Filter<Environment, Object[]> {
             }
         }
         return line;
-    } */
+    }
 
     private ArrayList<Environment> environments;
     private FilterUtils<Environment> utils;
