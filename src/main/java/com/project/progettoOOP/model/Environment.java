@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Environment implements Serializable {
 
@@ -19,6 +20,8 @@ public class Environment implements Serializable {
 
     @JsonPropertyDescription("Data e ora esatta")
     @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private static AtomicLong idCounter = new AtomicLong();
+    private Integer id;
     private Date date_time;
     private float no;
     private float no2;
@@ -26,6 +29,14 @@ public class Environment implements Serializable {
     private float so2;
     private float o3;
     private float co;
+
+    private static Integer createID() {
+        return Integer.valueOf(String.valueOf(idCounter.getAndIncrement()));
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     public Date getDate_time() {
         return date_time;
@@ -84,6 +95,7 @@ public class Environment implements Serializable {
     }
 
     public Environment(Date date_time, float no, float no2, float nox, float so2, float o3, float co) {
+        id = createID();
         this.date_time = date_time;
         this.no = no;
         this.no2 = no2;
@@ -94,6 +106,7 @@ public class Environment implements Serializable {
     }
 
     public Environment( float no, float no2, float nox, float so2, float o3, float co) {
+        id = createID();
         this.no = no;
         this.no2 = no2;
         this.nox = nox;
@@ -112,7 +125,9 @@ public class Environment implements Serializable {
         this.date_time = date;
     }
 
-    public Environment(){}
+    public Environment(){
+        id = createID();
+    }
 
     @Override
     public String toString() {

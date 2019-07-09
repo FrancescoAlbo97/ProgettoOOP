@@ -1,6 +1,5 @@
 package com.project.progettoOOP.controllers;
 
-import com.project.progettoOOP.model.EnvironmentCollection;
 import com.project.progettoOOP.utils.DownloadCSV;
 import com.project.progettoOOP.utils.ParserCSV;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ public class IndexController {
     @GetMapping
     public String download (Model model) throws Exception {
         DownloadCSV.getCSV();
-        EnvironmentCollection environmentCollection = ParserCSV.parser("data.csv");
         model.addAttribute("test", ParserCSV.vector );
         return "download";
     }
