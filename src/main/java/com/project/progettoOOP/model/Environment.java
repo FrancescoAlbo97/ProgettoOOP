@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicLong;
@@ -18,10 +15,11 @@ public class Environment implements Serializable {
     //Datetime and
     //Unvalidated 10 min averages in UTC time-base of NO, NO2, O3 and SO2, all in ppb, CO in ppm
 
-    @JsonPropertyDescription("Data e ora esatta")
-    @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private static AtomicLong idCounter = new AtomicLong();
     private Integer id;
+
+    @JsonPropertyDescription("Data e ora esatta")
+    @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date date_time;
     private float no;
     private float no2;

@@ -4,15 +4,16 @@ import com.project.progettoOOP.model.Environment;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class ParserCSV {
 
     final static String COMMA_DELIMITER = ",";
-    public static String vector = " ";
 
-    public static ArrayList<Environment> parser (String fileName) throws ParseException {
+    public static ArrayList<Environment> parser (String fileName){
 
         List<List<String>> records = new ArrayList<>();
         ArrayList<Environment> arrayList = new ArrayList<>();

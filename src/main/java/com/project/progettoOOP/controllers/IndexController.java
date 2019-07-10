@@ -14,8 +14,6 @@ public class IndexController {
 
     @GetMapping
     public String download (Model model) throws Exception {
-        DownloadCSV.getCSV();
-        model.addAttribute("test", ParserCSV.vector );
         return "download";
     }
 
