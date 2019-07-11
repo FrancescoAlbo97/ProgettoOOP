@@ -21,6 +21,7 @@ public class JsonController {
 
     private ArrayList<Integer> month = new ArrayList<>();
     private ArrayList<Integer> day = new ArrayList<>();
+    ArrayList<Environment> selectedData = new ArrayList<>();
 
     @Autowired
     private EnvironmentService environmentService;
@@ -44,6 +45,7 @@ public class JsonController {
             ) {
         month.clear();
         day.clear();
+        selectedData.clear();
         if (!monthString.get(0).equals("0") && !dayString.get(0).equals("0")) {
             String[] monthVector = new String[monthString.size()];
             monthVector = monthString.toArray(monthVector);
@@ -61,28 +63,9 @@ public class JsonController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
-        /*
-        for (Environment obj : EnvironmentCollection.environments){
-            if(obj.getDate_time().getMonth() == month && obj.getDate_time().getDay() == day){
-                arrayList.add(obj);
-            }
-        }
-        Statistic<Environment> statistic = new Statistic<Environment>(arrayList,Molecule); */
-        ArrayList<Environment> arrayList = new ArrayList<>();
-        for (Integer m : month) {
-            for (Integer d : day) {
-                for (Environment obj : EnvironmentCollection.environments) {
-                    int v = obj.getDate_time().getMonth();
-                    if (obj.getDate_time().getMonth()+1 == m) {
-                        int c = obj.getDate_time().getDate();
-                        if (obj.getDate_time().getDate() == d) {
-                            arrayList.add(obj);
-                        }
-                    }
-                }
-            }
-        }
-        return arrayList;
+        //Statistic<Environment> statistic = new Statistic<Environment>(arrayList,Molecule);
+        selectDataByMonthAndDate();
+        return selectedData;
     }
 
 
@@ -123,6 +106,22 @@ public class JsonController {
             } else return false;
         }
         return true;
+    }
+
+    private void selectDataByMonthAndDate(){
+        for (Integer m : month) {
+            for (Integer d : day) {
+                for (Environment obj : EnvironmentCollection.environments) {
+                    int v = obj.getDate_time().getMonth();
+                    if (obj.getDate_time().getMonth()+1 == m) {
+                        int c = obj.getDate_time().getDate();
+                        if (obj.getDate_time().getDate() == d) {
+                            selectedData.add(obj);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
