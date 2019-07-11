@@ -7,18 +7,20 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.progettoOOP.model.Environment;
 import com.project.progettoOOP.model.EnvironmentCollection;
 import com.project.progettoOOP.service.EnvironmentService;
-import com.project.progettoOOP.utils.ParserCSV;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Vector;
+
 
 
 @RestController
 public class JsonController {
+
+    private ArrayList<Integer> month = new ArrayList<>();
+    private ArrayList<Integer> day = new ArrayList<>();
 
     @Autowired
     private EnvironmentService environmentService;
@@ -35,20 +37,20 @@ public class JsonController {
     }
 
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
-    //ArrayList<Environment>
-    String getStatisticByMonthByDayByMolecule(
+    ArrayList<Environment> getStatisticByMonthByDayByMolecule(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
             ) {
-        ArrayList<Environment> arrayList = new ArrayList<>();
+        month.clear();
+        day.clear();
         if (!monthString.get(0).equals("0") && !dayString.get(0).equals("0")) {
             String[] monthVector = new String[monthString.size()];
             monthVector = monthString.toArray(monthVector);
             String[] dayVector = new String[dayString.size()];
             dayVector = dayString.toArray(dayVector);
             if (!checkDateAndParse(monthVector,dayVector)) {
-                return "error";
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
         if (monthString.get(0).equals("0") && (!dayString.get(0).equals("0"))){
@@ -56,7 +58,7 @@ public class JsonController {
             String[] dayVector = new String[dayString.size()];
             dayVector = dayString.toArray(dayVector);
             if (!checkDateAndParse(monthVector,dayVector)) {
-                return "error";
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
         /*
@@ -66,53 +68,23 @@ public class JsonController {
             }
         }
         Statistic<Environment> statistic = new Statistic<Environment>(arrayList,Molecule); */
-        //EnvironmentCollection environmentCollection = new EnvironmentCollection(ParserCSV.parser("data.csv").getEnvironments());
-        //ObjectMapper mapper = new ObjectMapper();
-        //return environmentService.getEnvironment();
-        //return mapper.writeValueAsString(objects.getEnvironments());
-        //EnvironmentCollection result = environmentService.getEnvironment();
-        //System.out.println(result.getEnvironments().get(0).toString());
-        //return EnvironmentCollection.environments;
-        //String ciao = month.get(0).toString() + day.get(0).toString();
-        return "ciao";
-    }
-
-    @RequestMapping(value = "/data/month/{month}/day/{day}", method = RequestMethod.GET, produces="application/json")
-        ArrayList<Environment> getStatisticByMonthByDay(
-            @PathVariable(value = "month") int month,
-            @PathVariable(value = "day") int day
-    ) {/*
-        for (Environment obj : EnvironmentCollection.environments){
-            if(obj.getDate_time().getMonth() == month && obj.getDate_time().getDay() == day){
-
+        ArrayList<Environment> arrayList = new ArrayList<>();
+        for (Integer m : month) {
+            for (Integer d : day) {
+                for (Environment obj : EnvironmentCollection.environments) {
+                    int v = obj.getDate_time().getMonth();
+                    if (obj.getDate_time().getMonth()+1 == m) {
+                        int c = obj.getDate_time().getDate();
+                        if (obj.getDate_time().getDate() == d) {
+                            arrayList.add(obj);
+                        }
+                    }
+                }
             }
-        }*/
-        //EnvironmentCollection environmentCollection = new EnvironmentCollection(ParserCSV.parser("data.csv").getEnvironments());
-        //ObjectMapper mapper = new ObjectMapper();
-        //return environmentService.getEnvironment();
-        //return mapper.writeValueAsString(objects.getEnvironments());
-        //EnvironmentCollection result = environmentService.getEnvironment();
-        //System.out.println(result.getEnvironments().get(0).toString());
-        return EnvironmentCollection.environments;
+        }
+        return arrayList;
     }
 
-    @RequestMapping(value = "/data/month/{month}", method = RequestMethod.GET, produces="application/json")
-        ArrayList<Environment> getStatisticByMonth (
-            @PathVariable(value = "month") int month
-    ) {/*
-        for (Environment obj : EnvironmentCollection.environments){
-            if(obj.getDate_time().getMonth() == month && obj.getDate_time().getDay() == day){
-
-            }
-        }*/
-        //EnvironmentCollection environmentCollection = new EnvironmentCollection(ParserCSV.parser("data.csv").getEnvironments());
-        //ObjectMapper mapper = new ObjectMapper();
-        //return environmentService.getEnvironment();
-        //return mapper.writeValueAsString(objects.getEnvironments());
-        //EnvironmentCollection result = environmentService.getEnvironment();
-        //System.out.println(result.getEnvironments().get(0).toString());
-        return EnvironmentCollection.environments;
-    }
 
     @RequestMapping(value="/environment", method=RequestMethod.POST, produces="application/json")
     public String saveEnvironmentPost(@RequestBody(required = false) String json) {
@@ -120,20 +92,10 @@ public class JsonController {
         return EnvironmentCollection.environments.get(0).toString();
     }
 
-    private void inizialize() throws ParseException {
-        ArrayList<Environment> environments = ParserCSV.parser("data.csv");
-        //EnvironmentCollection environmentCollection = new EnvironmentCollection(environments);
-        for (Environment obj : environments){
-            environmentService.createEnvironment(obj);
-        }
-    }
-
     private boolean checkDateAndParse(String[] monthString, String[] dayString) {
-        ArrayList<Integer> month = new ArrayList<>();
-        ArrayList<Integer> day = new ArrayList<>();
         for (int i = 0; i < monthString.length; i++) {
             if (monthString[i].matches("^([1-9]|1[012])$")) {
-                Integer integer = new Integer(Integer.parseInt(monthString[i]));
+                Integer integer = Integer.parseInt(monthString[i]);
                 month.add(integer);
                 if (!dayString[0].equals("0")){
                     if (month.get(i) == 2) {
