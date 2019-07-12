@@ -8,11 +8,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Classe che mi permette di fare il parsing del CSV già scaricato
+ */
 public class ParserCSV {
 
     final static String COMMA_DELIMITER = ",";
 
+    /**
+     * Metodo che parsa il CSV scaricato e ritorna le informazioni attraverso un arrayList
+     *
+     * @param fileName nome dove è salvato il CSV scaricato
+     * @return ritorna la collezione  di oggetti
+     */
     public static ArrayList<Environment> parser (String fileName){
 
         List<List<String>> records = new ArrayList<>();
@@ -30,8 +38,7 @@ public class ParserCSV {
                 arrayList.add(new Environment(date, Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]), Float.parseFloat(values[6])));
                 */
             }
-        }
-        finally {
+        } finally {
             return arrayList;
         }
     }
