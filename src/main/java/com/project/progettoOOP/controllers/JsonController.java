@@ -12,8 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -21,7 +25,7 @@ public class JsonController {
 
     private ArrayList<Integer> month = new ArrayList<>();
     private ArrayList<Integer> day = new ArrayList<>();
-    ArrayList<Environment> selectedData = new ArrayList<>();
+    private ArrayList<Environment> selectedData = new ArrayList<>();
 
     @Autowired
     private EnvironmentService environmentService;
@@ -29,7 +33,7 @@ public class JsonController {
     //public JsonController(){ }
 
     @RequestMapping(value = "/metadata", method = RequestMethod.GET, produces="application/json")
-    String getMetadataOfJson() throws JsonProcessingException {
+    String getMetadata() throws JsonProcessingException {
 
             ObjectMapper mapper = new ObjectMapper();
             JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper);
@@ -38,14 +42,32 @@ public class JsonController {
     }
 
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
-    ArrayList<Environment> getStatisticByMonthByDayByMolecule(
+    ArrayList<Environment> getData(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-            ) {
+            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         month.clear();
         day.clear();
         selectedData.clear();
+        checkDateFormat(monthString, dayString);
+        //Statistic<Environment> statistic = new Statistic<Environment>(arrayList,Molecule);
+        selectDataByMonthAndDate();
+        if (!molecule[0].equals("all")){
+            Map<String, Float> selectedMap = new HashMap<>();
+            selectedMap = selectByMolecule(molecule, selectedMap);
+        }
+        return selectedData;
+    }
+
+
+    @RequestMapping(value="/environment", method=RequestMethod.POST, produces="application/json")
+    public String saveEnvironmentPost(@RequestBody(required = false) String json) {
+
+        return EnvironmentCollection.environments.get(0).toString();
+    }
+
+    private void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
         if (!monthString.get(0).equals("0") && !dayString.get(0).equals("0")) {
             String[] monthVector = new String[monthString.size()];
             monthVector = monthString.toArray(monthVector);
@@ -63,16 +85,6 @@ public class JsonController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
-        //Statistic<Environment> statistic = new Statistic<Environment>(arrayList,Molecule);
-        selectDataByMonthAndDate();
-        return selectedData;
-    }
-
-
-    @RequestMapping(value="/environment", method=RequestMethod.POST, produces="application/json")
-    public String saveEnvironmentPost(@RequestBody(required = false) String json) {
-
-        return EnvironmentCollection.environments.get(0).toString();
     }
 
     private boolean checkDateAndParse(String[] monthString, String[] dayString) {
@@ -122,6 +134,17 @@ public class JsonController {
                 }
             }
         }
+    }
+
+    private Map<String, Float> selectByMolecule(String[] molecule, Map<String, Float> map) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method m = null;
+        for (Environment item : selectedData) {
+            for (int i=0; i < molecule.length; i++){
+                m = item.getClass().getMethod("get"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
+                map.put(molecule[i], (Float) m.invoke(item));
+            }
+        }
+        return map;
     }
 
 }

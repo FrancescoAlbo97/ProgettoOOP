@@ -18,14 +18,20 @@ public class Environment implements Serializable {
     private static AtomicLong idCounter = new AtomicLong();
     private Integer id;
 
-    @JsonPropertyDescription("Data e ora esatta")
+    @JsonPropertyDescription("Data, ora, minuti del 2016 a Varese")
     @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date date_time;
+    @JsonPropertyDescription("Monossido di azoto")
     private float no;
+    @JsonPropertyDescription("Biossido di azoto")
     private float no2;
+    @JsonPropertyDescription("Altri ossidi di azoto")
     private float nox;
+    @JsonPropertyDescription("Biossido di zolfo")
     private float so2;
+    @JsonPropertyDescription("Ozono")
     private float o3;
+    @JsonPropertyDescription("Monossido di carbonio")
     private float co;
 
     private static Integer createID() {
