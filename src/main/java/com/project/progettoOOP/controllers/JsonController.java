@@ -27,8 +27,8 @@ public class JsonController {
     private ArrayList<Integer> day = new ArrayList<>();
     private ArrayList<Environment> selectedData = new ArrayList<>();
 
-    @Autowired
-    private EnvironmentService environmentService;
+    //@Autowired
+    //private EnvironmentService environmentService;
 
     //public JsonController(){ }
 
@@ -46,18 +46,20 @@ public class JsonController {
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, JsonProcessingException, NoSuchFieldException {
         month.clear();
         day.clear();
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         //Statistic<Environment> statistic = new Statistic<Environment>(arrayList,Molecule);
         selectDataByMonthAndDate();
+        ObjectMapper mapper = new ObjectMapper();
         if (!molecule[0].equals("all")){
-            Map<String, Float> selectedMap = new HashMap<>();
-            selectedMap = selectByMolecule(molecule, selectedMap);
+            ArrayList<Environment> selectedDataByMolecule = new ArrayList<>();
+            selectedDataByMolecule = selectByMolecule(molecule);
+            return selectedDataByMolecule;
         }
-        return selectedData;
+        else return selectedData;
     }
 
 
@@ -85,6 +87,7 @@ public class JsonController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
+        //if (monthString.get(0).equals("0") && (!dayString.get(0).equals("0"))){
     }
 
     private boolean checkDateAndParse(String[] monthString, String[] dayString) {
@@ -136,15 +139,18 @@ public class JsonController {
         }
     }
 
-    private Map<String, Float> selectByMolecule(String[] molecule, Map<String, Float> map) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
         Method m = null;
+        ArrayList<Environment> arrayList = new ArrayList<>();
         for (Environment item : selectedData) {
+            float[] values = new float[molecule.length];
             for (int i=0; i < molecule.length; i++){
                 m = item.getClass().getMethod("get"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
-                map.put(molecule[i], (Float) m.invoke(item));
+                values[i] = (float) m.invoke(item);
             }
+            arrayList.add(new Environment(molecule,values,item.getDate_time()));
         }
-        return map;
+        return arrayList;
     }
 
 }

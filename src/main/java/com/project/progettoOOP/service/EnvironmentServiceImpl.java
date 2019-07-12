@@ -13,11 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class EnvironmentServiceImpl implements EnvironmentService{
+public class EnvironmentServiceImpl {
 
     private static Map<Integer,Environment> environmentMap = new HashMap<>();
-    //private final AtomicLong counter = new AtomicLong();
-
+/*
     @Override
     public void createEnvironment(Environment environment) {
         if(environmentMap.containsKey(environment.getId())){
@@ -52,4 +51,6 @@ public class EnvironmentServiceImpl implements EnvironmentService{
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not elements found");
     }
+    */
+
 }
