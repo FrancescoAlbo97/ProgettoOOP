@@ -24,18 +24,17 @@ public class Environment implements Serializable {
     @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date date_time;
     @JsonPropertyDescription("Monossido di azoto")
-    private float no;
+    private Float no;
     @JsonPropertyDescription("Biossido di azoto")
-    private float no2;
+    private Float no2;
     @JsonPropertyDescription("Altri ossidi di azoto")
-    private float nox;
+    private Float nox;
     @JsonPropertyDescription("Biossido di zolfo")
-    private float so2;
+    private Float so2;
     @JsonPropertyDescription("Ozono")
-    private float o3;
+    private Float o3;
     @JsonPropertyDescription("Monossido di carbonio")
-    private float co;
-    private float no1;
+    private Float co;
 
     public Date getDate_time() {
         return date_time;
@@ -45,7 +44,7 @@ public class Environment implements Serializable {
         this.date_time = date_time;
     }
 
-    public float getNo() {
+    public Float getNo() {
         return no;
     }
 
@@ -53,7 +52,7 @@ public class Environment implements Serializable {
         this.no = no;
     }
 
-    public float getNo2() {
+    public Float getNo2() {
         return no2;
     }
 
@@ -61,7 +60,7 @@ public class Environment implements Serializable {
         this.no2 = no2;
     }
 
-    public float getNox() {
+    public Float getNox() {
         return nox;
     }
 
@@ -69,7 +68,7 @@ public class Environment implements Serializable {
         this.nox = nox;
     }
 
-    public float getSo2() {
+    public Float getSo2() {
         return so2;
     }
 
@@ -77,7 +76,7 @@ public class Environment implements Serializable {
         this.so2 = so2;
     }
 
-    public float getO3() {
+    public Float getO3() {
         return o3;
     }
 
@@ -85,24 +84,24 @@ public class Environment implements Serializable {
         this.o3 = o3;
     }
 
-    public float getCo() {
+    public Float getCo() {
         return co;
     }
 
     public void setCo(float co) {
         this.co = co;
     }
-
-    public Environment(String[] molecule, float[] value, Date date) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+/*
+    public void selectMolecules(String[] molecule, float[] value, Date date, Environment environment) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method m = null;
         this.setDate_time(date);
         for (int i = 0; i < molecule.length; i++){
-            m = this.getClass().getMethod("set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
+            m = environment.getClass().getMethod("set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),Float.class);
             m.invoke(this, value[i]);
         }
-    }
+    }*/
 
-    public Environment(Date date_time, float no, float no2, float nox, float so2, float o3, float co) {
+    public Environment(Date date_time, Float no, Float no2, Float nox, Float so2, Float o3, Float co) {
         this.date_time = date_time;
         this.no = no;
         this.no2 = no2;
@@ -112,7 +111,7 @@ public class Environment implements Serializable {
         this.co = co;
     }
 
-    public Environment( float no, float no2, float nox, float so2, float o3, float co) {
+    public Environment( Float no, Float no2, Float nox, Float so2, Float o3, Float co) {
         this.no = no;
         this.no2 = no2;
         this.nox = nox;

@@ -62,7 +62,6 @@ public class JsonController {
         else return selectedData;
     }
 
-
     @RequestMapping(value="/environment", method=RequestMethod.POST, produces="application/json")
     public String saveEnvironmentPost(@RequestBody(required = false) String json) {
 
@@ -70,7 +69,7 @@ public class JsonController {
     }
 
     private void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
-        if (!monthString.get(0).equals("0") && !dayString.get(0).equals("0")) {
+        if (!monthString.get(0).equals("0")) {
             String[] monthVector = new String[monthString.size()];
             monthVector = monthString.toArray(monthVector);
             String[] dayVector = new String[dayString.size()];
@@ -87,7 +86,6 @@ public class JsonController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
-        //if (monthString.get(0).equals("0") && (!dayString.get(0).equals("0"))){
     }
 
     private boolean checkDateAndParse(String[] monthString, String[] dayString) {
@@ -117,21 +115,24 @@ public class JsonController {
                             } else return false;
                         }
                     }
-                }
+                } else day.add(-1);
             } else return false;
         }
         return true;
     }
 
     private void selectDataByMonthAndDate(){
-        for (Integer m : month) {
-            for (Integer d : day) {
-                for (Environment obj : EnvironmentCollection.environments) {
-                    int v = obj.getDate_time().getMonth();
-                    if (obj.getDate_time().getMonth()+1 == m) {
-                        int c = obj.getDate_time().getDate();
-                        if (obj.getDate_time().getDate() == d) {
-                            selectedData.add(obj);
+        for (Environment obj : EnvironmentCollection.environments) {
+            for (Integer m : month) {
+                if (obj.getDate_time().getMonth()+1 == m) {
+                    if(day.get(0) == -1){
+                        selectedData.add(obj);
+                    }
+                    else {
+                        for (Integer d : day) {
+                            if (obj.getDate_time().getDate() == d) {
+                                selectedData.add(obj);
+                            }
                         }
                     }
                 }
@@ -140,15 +141,20 @@ public class JsonController {
     }
 
     private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-        Method m = null;
+        Method m1 = null;
+        Method m2 = null;
         ArrayList<Environment> arrayList = new ArrayList<>();
         for (Environment item : selectedData) {
             float[] values = new float[molecule.length];
+            Environment environment = new Environment(null,null,null,null,null,null);
+            environment.setDate_time(item.getDate_time());
             for (int i=0; i < molecule.length; i++){
-                m = item.getClass().getMethod("get"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
-                values[i] = (float) m.invoke(item);
+                m1 = item.getClass().getMethod("get"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
+                values[i] = (float) m1.invoke(item);
+                m2 = environment.getClass().getMethod( "set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1), Float.TYPE);
+                m2.invoke(environment, values[i]);
             }
-            arrayList.add(new Environment(molecule,values,item.getDate_time()));
+            arrayList.add(environment);
         }
         return arrayList;
     }
