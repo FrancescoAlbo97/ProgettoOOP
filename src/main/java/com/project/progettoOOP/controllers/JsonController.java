@@ -46,12 +46,30 @@ public class JsonController {
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, JsonProcessingException, NoSuchFieldException {
+            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
         month.clear();
         day.clear();
         selectedData.clear();
         checkDateFormat(monthString, dayString);
-        //Statistic<Environment> statistic = new Statistic<Environment>(arrayList,Molecule);
+        selectDataByMonthAndDate();
+        if (!molecule[0].equals("all")){
+            ArrayList<Environment> selectedDataByMolecule = new ArrayList<>();
+            selectedDataByMolecule = selectByMolecule(molecule);
+            return selectedDataByMolecule;
+        }
+        else return selectedData;
+    }
+
+    @RequestMapping(value = "/statistic", method = RequestMethod.GET, produces="application/json")
+    ArrayList<Environment> getStatistics(
+            @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
+            @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
+            @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
+    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
+        month.clear();
+        day.clear();
+        selectedData.clear();
+        checkDateFormat(monthString, dayString);
         selectDataByMonthAndDate();
         ObjectMapper mapper = new ObjectMapper();
         if (!molecule[0].equals("all")){
@@ -158,5 +176,23 @@ public class JsonController {
         }
         return arrayList;
     }
-
+/*
+    private String getFilteredStatistics(ArrayList<Environment> arrayList){
+        for (Environment obj : arrayList) {
+            for (Integer m : month) {
+                if (obj.getDate_time().getMonth()+1 == m) {
+                    if(day.get(0) == -1){
+                        selectedData.add(obj);
+                    }
+                    else {
+                        for (Integer d : day) {
+                            if (obj.getDate_time().getDate() == d) {
+                                selectedData.add(obj);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }*/
 }
