@@ -1,21 +1,27 @@
 package com.project.progettoOOP.utils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * E' la classe che permette di recuperare le informazioni da un CSV parsando un JSON .
+ */
 public class DownloadCSV {
-
-    public static void getCSV(String fileName) throws Exception {
+    /**
+     * Metodo che scarica un JSON e lo inserisce in un JSON object
+     *
+     * @param fileName il nome che si assegnerà al file
+     * @throws Exception dovuta al metodo getInputStream
+     */
+    public static void getCSV(String fileName) throws IOException, JSONException {
 
         URLConnection openConnection = new URL("http://data.europa.eu/euodp/data/api/3/action/package_show?id=jrc-abcis-ig-2016").openConnection();
         //openConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
@@ -37,7 +43,7 @@ public class DownloadCSV {
         JSONObject objI = (obj.getJSONObject("result"));
         JSONArray objA = (objI.getJSONArray("resources"));
 
-        for(int i=0; i < objA.length(); i++) {
+        for(int i = 0; i < objA.length(); i++) {
             if (objA.getJSONObject(i) instanceof JSONObject) {
                 JSONObject o1 = objA.getJSONObject(i);
                 String format = (String) o1.get("format");
@@ -49,7 +55,15 @@ public class DownloadCSV {
         }
     }
 
-    private static void downloadFile(String url, String fileName) throws Exception {
+
+    /**
+     * Metodo che si connette al URL e scarica effetivamente il JSON nel filename
+     *
+     * @param url      URL che identifica il JSON
+     * @param fileName nome del file dove verrà salvato il JSON
+     * @throws Exception dovuta al metodo copy
+     */
+    private static void downloadFile(String url, String fileName) throws IOException {
         File file = new File(fileName);
         if (!file.exists()){
             try (InputStream in = URI.create(url).toURL().openStream()) {
