@@ -1,21 +1,19 @@
 package com.project.progettoOOP.utils;
 
 import com.project.progettoOOP.model.Environment;
-import com.project.progettoOOP.model.EnvironmentCollection;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class ParserCSV {
 
     final static String COMMA_DELIMITER = ",";
-    public static String vector = " ";
 
-    public static EnvironmentCollection parser (String fileName) throws ParseException {
+    public static ArrayList<Environment> parser (String fileName){
 
         List<List<String>> records = new ArrayList<>();
         ArrayList<Environment> arrayList = new ArrayList<>();
@@ -34,7 +32,7 @@ public class ParserCSV {
             }
         }
         finally {
-            return new EnvironmentCollection(arrayList);
+            return arrayList;
         }
     }
 }

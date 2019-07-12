@@ -1,0 +1,139 @@
+package com.project.progettoOOP.utils;
+
+import com.project.progettoOOP.model.Environment;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+
+public class Statistic<T> {
+
+    //avg, min, max, dev std, sum
+    //public Map<K,T> map = new HashMap<K,T>();
+    private float avg;
+    private float min;
+    private float max;
+    private float dev;
+    private float sum;
+
+    public Statistic(ArrayList<T> arrayList, String name) {
+        ArrayList<Float> values = new ArrayList<>();
+        for (T item : arrayList) {
+            Field f = null;
+            try {
+                f = item.getClass().getField(name);
+                try {
+                    values.add((Float) f.get(item));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
+        this.avg = getAvg(values);
+        this.min = getMin(values);
+        this.max = getMax(values);
+        this.dev = getDev(values);
+        this.sum = getSum(values);
+    }
+
+    public Statistic(float avg, float min, float max, float dev, float sum) {
+        this.avg = avg;
+        this.min = min;
+        this.max = max;
+        this.dev = dev;
+        this.sum = sum;
+    }
+
+    public float getAvg() {
+        return avg;
+    }
+
+    public void setAvg(float avg) {
+        this.avg = avg;
+    }
+
+    public float getMin() {
+        return min;
+    }
+
+    public void setMin(float min) {
+        this.min = min;
+    }
+
+    public float getMax() {
+        return max;
+    }
+
+    public void setMax(float max) {
+        this.max = max;
+    }
+
+    public float getDev() {
+        return dev;
+    }
+
+    public void setDev(float dev) {
+        this.dev = dev;
+    }
+
+    public float getSum() {
+        return sum;
+    }
+
+    public void setSum(float sum) {
+        this.sum = sum;
+    }
+
+    private float getAvg(ArrayList<Float> arrayList) {
+        int count = 0;
+        float sum = 0;
+        for (Float item : arrayList) {
+            sum += item;
+            count++;
+        }
+        return sum/count;
+    }
+
+    private float getDev(ArrayList<Float> arrayList) {
+        float avg = getAvg(arrayList);
+        int count = 0;
+        float sum = 0;
+        for (Float item : arrayList) {
+            sum += Math.pow(item - avg, 2);
+            count++;
+        }
+        return (float) Math.pow(sum/count, 0.5);
+    }
+
+    private float getMin(ArrayList<Float> arrayList) {
+        float currentMin = arrayList.get(0);
+        for (int i = 1; i < arrayList.size(); i++) {
+            if(arrayList.get(i) < currentMin){
+                currentMin = arrayList.get(i);
+            }
+        }
+        return currentMin;
+    }
+
+    private float getMax(ArrayList<Float> arrayList) {
+        float currentMax = arrayList.get(0);
+        for (int i = 1; i < arrayList.size(); i++) {
+            if(arrayList.get(i) > currentMax){
+                currentMax = arrayList.get(i);
+            }
+        }
+        return currentMax;
+    }
+
+    private float getSum(ArrayList<Float> arrayList) {
+        float sum = 0;
+        for (int i = 1; i < arrayList.size(); i++) {
+            sum += arrayList.get(i);
+            }
+        return sum;
+    }
+
+}

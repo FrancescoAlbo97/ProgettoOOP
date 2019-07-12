@@ -1,24 +1,46 @@
 package com.project.progettoOOP.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Environment implements Serializable {
 
     //Datetime and
     //Unvalidated 10 min averages in UTC time-base of NO, NO2, O3 and SO2, all in ppb, CO in ppm
 
-    @JsonPropertyDescription("Data e ora esatta")
+    private static AtomicLong idCounter = new AtomicLong();
+    private Integer id;
+
+    @JsonPropertyDescription("Data, ora, minuti del 2016 a Varese")
+    @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date date_time;
-    private float NO;
-    private float NO2;
-    private float NOx;
-    private float SO2;
-    private float O3;
-    private float CO;
+    @JsonPropertyDescription("Monossido di azoto")
+    private float no;
+    @JsonPropertyDescription("Biossido di azoto")
+    private float no2;
+    @JsonPropertyDescription("Altri ossidi di azoto")
+    private float nox;
+    @JsonPropertyDescription("Biossido di zolfo")
+    private float so2;
+    @JsonPropertyDescription("Ozono")
+    private float o3;
+    @JsonPropertyDescription("Monossido di carbonio")
+    private float co;
+
+    private static Integer createID() {
+        return Integer.valueOf(String.valueOf(idCounter.getAndIncrement()));
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     public Date getDate_time() {
         return date_time;
@@ -28,93 +50,99 @@ public class Environment implements Serializable {
         this.date_time = date_time;
     }
 
-    public float getNO() {
-        return NO;
+    public float getNo() {
+        return no;
     }
 
-    public void setNO(float NO) {
-        this.NO = NO;
+    public void setNo(float no) {
+        this.no = no;
     }
 
-    public float getNO2() {
-        return NO2;
+    public float getNo2() {
+        return no2;
     }
 
-    public void setNO2(float NO2) {
-        this.NO2 = NO2;
+    public void setNo2(float no2) {
+        this.no2 = no2;
     }
 
-    public float getNOx() {
-        return NOx;
+    public float getNox() {
+        return nox;
     }
 
-    public void setNOx(float NOx) {
-        this.NOx = NOx;
+    public void setNox(float nox) {
+        this.nox = nox;
     }
 
-    public float getSO2() {
-        return SO2;
+    public float getSo2() {
+        return so2;
     }
 
-    public void setSO2(float SO2) {
-        this.SO2 = SO2;
+    public void setSo2(float so2) {
+        this.so2 = so2;
     }
 
     public float getO3() {
-        return O3;
+        return o3;
     }
 
     public void setO3(float o3) {
-        O3 = o3;
+        this.o3 = o3;
     }
 
-    public float getCO() {
-        return CO;
+    public float getCo() {
+        return co;
     }
 
-    public void setCO(float CO) {
-        this.CO = CO;
+    public void setCo(float co) {
+        this.co = co;
     }
 
-    public Environment(float no, float no2, float nox, float so2, float o3, float co){
-        //this.date_time = date_time;
-        NO = no;
-        NO2 = no2;
-        NOx = nox;
-        SO2 = so2;
-        O3 = o3;
-        CO = co;
-    }
-
-    public Environment(Date date_time, float no, float no2, float nox, float so2, float o3, float co){
+    public Environment(Date date_time, float no, float no2, float nox, float so2, float o3, float co) {
+        id = createID();
         this.date_time = date_time;
-        NO = no;
-        NO2 = no2;
-        NOx = nox;
-        SO2 = so2;
-        O3 = o3;
-        CO = co;
+        this.no = no;
+        this.no2 = no2;
+        this.nox = nox;
+        this.so2 = so2;
+        this.o3 = o3;
+        this.co = co;
+    }
+
+    public Environment( float no, float no2, float nox, float so2, float o3, float co) {
+        id = createID();
+        this.no = no;
+        this.no2 = no2;
+        this.nox = nox;
+        this.so2 = so2;
+        this.o3 = o3;
+        this.co = co;
     }
 
     public Environment(String date_time, String no, String no2, String nox, String so2, String o3, String co) throws ParseException {
         this(Float.parseFloat(no), Float.parseFloat(no2), Float.parseFloat(nox), Float.parseFloat(so2), Float.parseFloat(o3), Float.parseFloat(co));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        //ParsePosition parsePosition = new ParsePosition(2);
+        //date_time += "+01:00";
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         Date date = formatter.parse(date_time);
         this.date_time = date;
     }
 
-    public Environment(){}
+    public Environment(){
+        id = createID();
+    }
 
     @Override
     public String toString() {
         return "Environment{" +
                 "date_time=" + date_time +
-                ", NO=" + NO +
-                ", NO2=" + NO2 +
-                ", NOx=" + NOx +
-                ", SO2=" + SO2 +
-                ", O3=" + O3 +
-                ", CO=" + CO +
+                ", no=" + no +
+                ", no2=" + no2 +
+                ", nox=" + nox +
+                ", so2=" + so2 +
+                ", o3=" + o3 +
+                ", co=" + co +
                 '}';
     }
 
