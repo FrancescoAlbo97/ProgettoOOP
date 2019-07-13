@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,13 +144,17 @@ public class JsonController {
     private void selectDataByMonthAndDate(){
         for (Environment obj : EnvironmentCollection.environments) {
             for (Integer m : month) {
-                if (obj.getDate_time().getMonth()+1 == m) {
+                LocalDate localDate = obj.getDate_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int selectedMonth = localDate.getMonthValue();
+                if (selectedMonth == m) {
                     if(day.get(0) == -1){
                         selectedData.add(obj);
                     }
                     else {
                         for (Integer d : day) {
-                            if (obj.getDate_time().getDate() == d) {
+                            LocalDate localDate1 = obj.getDate_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                            int selectedDay = localDate1.getDayOfMonth();
+                            if (selectedDay == d) {
                                 selectedData.add(obj);
                             }
                         }
