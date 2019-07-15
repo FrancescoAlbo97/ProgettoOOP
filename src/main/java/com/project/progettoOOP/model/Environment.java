@@ -9,6 +9,11 @@ import com.project.progettoOOP.utils.DateCustom;
 import java.io.Serializable;
 import java.text.ParseException;
 
+/**
+ * Classe che modella un singolo elemento del dataset.Ogni elemento indica i valori di Monossido di azoto(no),biossido di azoto(no2)
+ * altri ossidi di azoto(nox),biossido di zolfo(so2),ozono(o3) e monossido di carbonio(co) che sono calcolati nella citta di Varese,
+ * durante l'anno 2016, ogni 10 minuti.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Environment implements Serializable {
 
@@ -33,90 +38,192 @@ public class Environment implements Serializable {
     @JsonIgnore
     private DateCustom myDate;
 
+    /**
+     * Metodo che permette di prendere la data di tipo DateCustom.
+     * @return Ritorna la data.
+     */
     public DateCustom getMyDate() {
         return myDate;
     }
 
+    /**
+     * Metodo che permette di inserire la data di tipo DateCustom.
+     * @param myDate Data da inserire.
+     */
     public void setMyDate(DateCustom myDate) {
         this.myDate = myDate;
     }
 
+    /**
+     * Metodo che permette di prendere la data di tipo stringa.
+     * @return Ritorna la stringa che indica la data.
+     */
     public String getDate_time() {
         return date_time;
     }
 
+    /**
+     * Metodo che permette di inserire la data di tipo stringa.
+     * @param date_time Stringa da inserire che indica la data.
+     */
     public void setDate_time(String date_time) {
         this.date_time = date_time;
     }
 
+    /**
+     * Metodo che permette di prendere la molecola di No.
+     * @return Rotorna il valore della molecola di No.
+     */
     public Float getNo() {
         return no;
     }
 
+    /**
+     * Metodo che permette di inserire la molecola No.
+     * @param no Valore da inserire.
+     */
     public void setNo(Float no) {
         this.no = no;
     }
+
+    /**
+     *  Metodo che permette di inserire la molecola No.
+     *  @param no Valore da inserire.
+     */
     public void setNo(float no) {
         this.no = no;
     }
 
+    /**
+     * Metodo che permette di prendere la molecola No2.
+     * @return Ritrona il valore della molecola di No2
+     */
     public Float getNo2() {
         return no2;
     }
 
+    /**
+     * Metodo che permette di inserire la molecola No2.
+     * @param no2 Valore da inserire
+     */
     public void setNo2(Float no2) {
         this.no2 = no2;
     }
+
+    /**
+     * Metodo che permette di inserire la molecola No2.
+     * @param no2 Valore da inserire.
+     */
     public void setNo2(float no2) {
         this.no2 = no2;
     }
 
-
+    /**
+     * Metodo che permette di prendere la molecola Nox.
+     * @return Ritorna il valore della molecola di Nox.
+     */
     public Float getNox() {
         return nox;
     }
 
+    /**
+     * Metodo che permette di inserire la molecola Nox.
+     * @param nox Valore da inserire.
+     */
     public void setNox(Float nox) {
         this.nox = nox;
     }
+
+    /**
+     * Metodo che permette di inserire la molecola Nox.
+     * @param nox Valore da inserire.
+     */
     public void setNox(float nox) {
         this.nox = nox;
     }
 
+    /**
+     * Metodo che permette di prendere la molecola So2.
+     * @return Ritorna il valore della molecola di So2.
+     */
     public Float getSo2() {
         return so2;
     }
 
+    /**
+     * Metodo che permette di inserire la molecola So2.
+     * @param so2 Valore da inserire.
+     */
     public void setSo2(Float so2) {
         this.so2 = so2;
     }
+
+    /**
+     * Metodo che permette di inserire la molecola So2.
+     * @param so2 Valore da inserire.
+     */
     public void setSo2(float so2) {
         this.so2 = so2;
     }
 
+    /**
+     * Metodo che permette di prendere la molecola O3.
+     * @return Ritorna il valore della molecola O3.
+     */
     public Float getO3() {
         return o3;
     }
 
+    /**
+     * Metodo che permette di inserire la molecola O3.
+     * @param o3 Valore da inserire.
+     */
     public void setO3(Float o3) {
         this.o3 = o3;
     }
+
+    /**
+     * Metodo che permette di inserire la molecola O3.
+     * @param o3 Valore da inserire.
+     */
     public void setO3(float o3) {
         this.o3 = o3;
     }
 
+    /**
+     * Metodo che permette di inserire la molecola Co.
+     * @return Ritorna il valore della molecola di Co.
+     */
     public Float getCo() {
         return co;
     }
 
+    /**
+     * Metodo che permette di inserire la molecola Co.
+     * @param co valore da inserire.
+     */
     public void setCo(Float co) {
         this.co = co;
     }
+
+    /**
+     * Metodo che permette di inserire la molecola di Co.
+     * @param co Valore da inserire.
+     */
     public void setCo(float co) {
         this.co = co;
     }
 
-
+    /**
+     * Costruttore della classe.
+     * @param date_time la data passata come parametro.
+     * @param no Indica la molecola di No.
+     * @param no2 Indica la molecola di No2.
+     * @param nox Indica la molecola di NoX.
+     * @param so2 Indica la molecola di So2.
+     * @param o3 Indica la molecola di O3.
+     * @param co Indica la molecola di CO.
+     */
     public Environment(DateCustom date_time, Float no, Float no2, Float nox, Float so2, Float o3, Float co) {
         this.myDate = date_time;
         this.date_time = date_time.toString();
@@ -128,6 +235,15 @@ public class Environment implements Serializable {
         this.co = co;
     }
 
+    /**
+     * Costruttore della classe.
+     * @param no Indica la molecola di No.
+     * @param no2 Indica la molecola di No2.
+     * @param nox Indica la molecola di NoX.
+     * @param so2 Indica la molecola di So2.
+     * @param o3 Indica la molecola di O3.
+     * @param co Indica la molecola di CO.
+     */
     public Environment( Float no, Float no2, Float nox, Float so2, Float o3, Float co) {
         this.no = no;
         this.no2 = no2;
@@ -137,6 +253,15 @@ public class Environment implements Serializable {
         this.co = co;
     }
 
+    /**
+     * Costruttore che serve per settare a null una variabile nel caso in cui il suo valore e nullo
+     * @param no Indica la molecola di No.
+     * @param no2 Indica la molecola di No2.
+     * @param nox Indica la molecola di NoX.
+     * @param so2 Indica la molecola di So2.
+     * @param o3 Indica la molecola di O3.
+     * @param co Indica la molecola di CO.
+     */
     public Environment( String no, String no2, String nox, String so2, String o3, String co) {
        if (no == null) setNo(null);
        else setNo(Float.parseFloat(no));
@@ -152,19 +277,43 @@ public class Environment implements Serializable {
         else setCo(Float.parseFloat(co));
     }
 
-    public Environment(String date_time, String no, String no2, String nox, String so2, String o3, String co) throws ParseException {
+    /**
+     * Costruttore della classe che serve nel caso in cui la data è una stringa.
+     * @param date_time Indica la data.
+     * @param no Indica la molecola di No.
+     * @param no2 Indica la molecola di No2.
+     * @param nox Indica la molecola di NoX.
+     * @param so2 Indica la molecola di So2.
+     * @param o3 Indica la molecola di O3.
+     * @param co Indica la molecola di CO.
+     */
+    public Environment(String date_time, String no, String no2, String nox, String so2, String o3, String co)  {
         this(no, no2, nox, so2, o3, co);
         DateCustom date = new DateCustom(date_time);
         this.date_time = date.toString();
         this.myDate = date;
     }
 
-    public Environment(DateCustom date_time, String no, String no2, String nox, String so2, String o3, String co) throws ParseException {
+    /**
+     * Costruttore che permette di trasformare la data in tipo stringa.
+     * @param date_time Indica la data
+     * @param no Indica la molecola di No.
+     * @param no2 Indica la molecola di No2.
+     * @param nox Indica la molecola di NoX.
+     * @param so2 Indica la molecola di So2.
+     * @param o3 Indica la molecola di O3.
+     * @param co Indica la molecola di CO.
+     */
+    public Environment(DateCustom date_time, String no, String no2, String nox, String so2, String o3, String co)  {
         this(no, no2, nox, so2, o3, co);
         this.myDate = date_time;
         this.date_time = date_time.toString();
     }
 
+    /**
+     * Metodo che permette la visualizzazione
+     * @return Ritorna l'elemento in formato stringa.
+     */
     @Override
     public String toString() {
         return "Environment{" +
