@@ -3,34 +3,47 @@ package com.project.progettoOOP.utils;
 import com.project.progettoOOP.model.Environment;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 public class Statistic<T> {
 
-    //avg, min, max, dev std, sum
-    //public Map<K,T> map = new HashMap<K,T>();
     private float avg;
     private float min;
     private float max;
     private float dev;
     private float sum;
-
+/*
     public Statistic(ArrayList<T> arrayList, String name) {
         ArrayList<Float> values = new ArrayList<>();
         for (T item : arrayList) {
             Field f = null;
             try {
                 f = item.getClass().getField(name);
-                try {
-                    values.add((Float) f.get(item));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+                values.add((Float) f.get(item));
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
+        }
+        this.avg = getAvg(values);
+        this.min = getMin(values);
+        this.max = getMax(values);
+        this.dev = getDev(values);
+        this.sum = getSum(values);
+    }
+*/
+
+    public Statistic(ArrayList<T> arrayList, String name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        ArrayList<Float> values = new ArrayList<>();
+        for (T item : arrayList) {
+            Method m = null;
+            m = item.getClass().getMethod("get"+name.substring(0, 1).toUpperCase()+name.substring(1),null);
+            values.add((Float) m.invoke(item));
         }
         this.avg = getAvg(values);
         this.min = getMin(values);

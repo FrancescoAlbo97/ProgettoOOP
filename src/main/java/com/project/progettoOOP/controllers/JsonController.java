@@ -7,6 +7,10 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.progettoOOP.model.Environment;
 import com.project.progettoOOP.model.EnvironmentCollection;
 import com.project.progettoOOP.service.EnvironmentService;
+import com.project.progettoOOP.utils.DateCustom;
+import com.project.progettoOOP.utils.Statistic;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +30,6 @@ import java.util.Map;
 @RestController
 public class JsonController {
 
-    private ArrayList<Integer> month = new ArrayList<>();
-    private ArrayList<Integer> day = new ArrayList<>();
     private ArrayList<Environment> selectedData = new ArrayList<>();
 
     //@Autowired
@@ -49,12 +52,9 @@ public class JsonController {
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
             ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
-        month.clear();
-        day.clear();
         selectedData.clear();
         checkDateFormat(monthString, dayString);
-        selectDataByMonthAndDate();
-        if (!molecule[0].equals("all")){
+        if (!molecule[0].equals("all")) {
             ArrayList<Environment> selectedDataByMolecule = new ArrayList<>();
             selectedDataByMolecule = selectByMolecule(molecule);
             return selectedDataByMolecule;
@@ -63,23 +63,31 @@ public class JsonController {
     }
 
     @RequestMapping(value = "/statistic", method = RequestMethod.GET, produces="application/json")
-    ArrayList<Environment> getStatistics(
+    String getStatistics(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
-        month.clear();
-        day.clear();
+    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, JsonProcessingException, JSONException {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
-        selectDataByMonthAndDate();
-        ObjectMapper mapper = new ObjectMapper();
         if (!molecule[0].equals("all")){
             ArrayList<Environment> selectedDataByMolecule = new ArrayList<>();
             selectedDataByMolecule = selectByMolecule(molecule);
-            return selectedDataByMolecule;
+            String result = getFilteredStatistics(selectedDataByMolecule, molecule);
+            JSONObject json = new JSONObject(result);
+            return json.toString();
+        } else{
+            String[] molecules = new String[6];
+            molecules[0] = "no";
+            molecules[1] = "no2";
+            molecules[2] = "nox";
+            molecules[3] = "so2";
+            molecules[4] = "o3";
+            molecules[5] = "co";
+            String result = getFilteredStatistics(selectedData, molecules);
+            JSONObject json = new JSONObject(result);
+            return json.toString();
         }
-        else return selectedData;
     }
 
     @RequestMapping(value="/environment", method=RequestMethod.POST, produces="application/json")
@@ -89,74 +97,90 @@ public class JsonController {
     }
 
     private void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
-        if (!monthString.get(0).equals("0")) {
-            String[] monthVector = new String[monthString.size()];
-            monthVector = monthString.toArray(monthVector);
-            String[] dayVector = new String[dayString.size()];
-            dayVector = dayString.toArray(dayVector);
-            if (!checkDateAndParse(monthVector,dayVector)) {
+        if (!monthString.get(0).equals("0") && !dayString.get(0).equals("0")) {
+            if (!checkDateAndParse(monthString,dayString)) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
-        if (monthString.get(0).equals("0") && (!dayString.get(0).equals("0"))){
-            String[] monthVector = {"1","2","3","4","5","6","7","8","9","10","11","12"};
-            String[] dayVector = new String[dayString.size()];
-            dayVector = dayString.toArray(dayVector);
-            if (!checkDateAndParse(monthVector,dayVector)) {
+        else if (monthString.get(0).equals("0") && (!dayString.get(0).equals("0"))){
+            monthString.clear();
+            for (int i = 1; i < 13; i++){
+                monthString.add(String.valueOf(i));
+            }
+            if (!checkDateAndParse(monthString,dayString)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
+            }
+        }
+        else if (!monthString.get(0).equals("0") && dayString.get(0).equals("0")){
+            if (!checkDateAndParse(monthString,dayString)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
+            }
+        }
+        else {  //vuoti entrambi
+            monthString.clear();
+            for (int i = 1; i < 13; i++){
+                monthString.add(String.valueOf(i));
+            }
+            if (!checkDateAndParse(monthString,dayString)){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
             }
         }
     }
 
-    private boolean checkDateAndParse(String[] monthString, String[] dayString) {
-        for (int i = 0; i < monthString.length; i++) {
-            if (monthString[i].matches("^([1-9]|1[012])$")) {
-                Integer integer = Integer.parseInt(monthString[i]);
-                month.add(integer);
-                if (!dayString[0].equals("0")){
-                    if (month.get(i) == 2) {
-                        for (int j = 0; j < dayString.length; j++) {
-                            if (dayString[j].matches("^([1-9]|1[1-9]|2[1-9])$")) {
-                                day.add(Integer.parseInt(dayString[j]));
+    private boolean checkDateAndParse(ArrayList<String> month, ArrayList<String> day) {
+        HashMap<Integer,ArrayList<Integer>> daysForMonths = new HashMap<>();
+        for (int i = 0; i < month.size(); i++) {
+            if (month.get(i).matches("^([1-9]|1[012])$")) {
+                int monthValue = Integer.parseInt(month.get(i));
+                if (!(day.get(0).equals("0"))) {
+                    if (monthValue == 2) {
+                        ArrayList<Integer> days = new ArrayList<>();
+                        for (int j = 0; j < day.size(); j++) {
+                            if (day.get(j).matches("^([1-9]|1[1-9]|2[1-9])$")) {
+                                 days.add(Integer.parseInt(day.get(j)));
                             } else return false;
                         }
+                        daysForMonths.put(monthValue,days);
                     }
-                    if (month.get(i) == 4 || month.get(i) == 6 || month.get(i) == 9 || month.get(i) == 11) {
-                        for (int j = 0; j < dayString.length; j++) {
-                            if (dayString[j].matches("^([1-9]|1[1-9]|2[1-9]|30)$")) {
-                                day.add(Integer.parseInt(dayString[j]));
+                    if (monthValue == 4 || monthValue == 6 || monthValue == 9 || monthValue == 11) {
+                        ArrayList<Integer> days = new ArrayList<>();
+                        for (int j = 0; j < day.size(); j++) {
+                            if (day.get(j).matches("^([1-9]|1[1-9]|2[1-9]|30)$")) {
+                                days.add(Integer.parseInt(day.get(j)));
                             } else return false;
                         }
+                        daysForMonths.put(monthValue,days);
                     }
                     else {
-                        for (int j = 0; j < dayString.length; j++) {
-                            if (dayString[j].matches("^([1-9]|1[1-9]|2[1-9]|3[01])$")) {
-                                day.add(Integer.parseInt(dayString[j]));
+                        ArrayList<Integer> days = new ArrayList<>();
+                        for (int j = 0; j < day.size(); j++) {
+                            if (day.get(j).matches("^([1-9]|1[1-9]|2[1-9]|3[01])$")) {
+                                days.add(Integer.parseInt(day.get(j)));
                             } else return false;
                         }
+                        daysForMonths.put(monthValue,days);
                     }
-                } else day.add(-1);
+                } else {
+                    ArrayList<Integer> days = new ArrayList<>();
+                    int dayOfMonth = DateCustom.getDaysOfMonth(monthValue);
+                    for (int j = 1; j <= dayOfMonth; j++) {
+                        days.add(j);
+                    }
+                    daysForMonths.put(monthValue,days);
+                }
             } else return false;
         }
+        selectDataByMonthAndDate(daysForMonths);
         return true;
     }
 
-    private void selectDataByMonthAndDate(){
+    private void selectDataByMonthAndDate(HashMap<Integer,ArrayList<Integer>> daysForMonths){
         for (Environment obj : EnvironmentCollection.environments) {
-            for (Integer m : month) {
-                LocalDate localDate = obj.getDate_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                int selectedMonth = localDate.getMonthValue();
-                if (selectedMonth == m) {
-                    if(day.get(0) == -1){
-                        selectedData.add(obj);
-                    }
-                    else {
-                        for (Integer d : day) {
-                            LocalDate localDate1 = obj.getDate_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                            int selectedDay = localDate1.getDayOfMonth();
-                            if (selectedDay == d) {
-                                selectedData.add(obj);
-                            }
+            for (Integer m : daysForMonths.keySet()){
+                if (obj.getMyDate().getMonth().intValue() == m.intValue()){
+                    for (Integer d: daysForMonths.get(m)){
+                        if(obj.getMyDate().getDay().intValue() == d.intValue()){
+                            selectedData.add(obj);
                         }
                     }
                 }
@@ -164,41 +188,53 @@ public class JsonController {
         }
     }
 
-    private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+    private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method m1 = null;
         Method m2 = null;
-        ArrayList<Environment> arrayList = new ArrayList<>();
+        ArrayList<Environment> arrayList = new ArrayList<>();/*
         for (Environment item : selectedData) {
-            float[] values = new float[molecule.length];
-            Environment environment = new Environment(null,null,null,null,null,null);
-            environment.setDate_time(item.getDate_time());
+            Float value = null;
+            String nullValue = "999999999";
+            Environment environment = new Environment(item.getDataTimeString(),nullValue,nullValue,nullValue,nullValue,nullValue,nullValue);
             for (int i=0; i < molecule.length; i++){
                 m1 = item.getClass().getMethod("get"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
-                values[i] = (float) m1.invoke(item);
+                value = (Float) m1.invoke(item);
                 m2 = environment.getClass().getMethod( "set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1), Float.TYPE);
-                m2.invoke(environment, values[i]);
+                Object obj = m2.invoke(environment, value);
             }
             arrayList.add(environment);
-        }
+        }*/
         return arrayList;
     }
-/*
-    private String getFilteredStatistics(ArrayList<Environment> arrayList){
-        for (Environment obj : arrayList) {
-            for (Integer m : month) {
-                if (obj.getDate_time().getMonth()+1 == m) {
-                    if(day.get(0) == -1){
-                        selectedData.add(obj);
-                    }
-                    else {
-                        for (Integer d : day) {
-                            if (obj.getDate_time().getDate() == d) {
-                                selectedData.add(obj);
-                            }
-                        }
-                    }
-                }
-            }
+
+    private String getFilteredStatistics(ArrayList<Environment> arrayList, String[] molecule) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        /*
+        if ( month.get(0) == -1){
+                HashMap<String, HashMap<String,Float>> allStatsmap = new HashMap<>();
+                allStatsmap = getStatisticOfMolecule(arrayList, molecule);
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.writeValueAsString(allStatsmap);
         }
-    }*/
+        else{
+            return "ciao";
+            //creare un ArrayList di Arralist per finire
+        }*/
+        return "ciao";
+    }
+
+    private HashMap<String, HashMap<String,Float>> getStatisticOfMolecule(ArrayList<Environment> arrayList, String[] molecule) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
+        HashMap<String, HashMap<String,Float>> allStatsmap = new HashMap<>();
+        for(int i = 0; i < molecule.length; i++){
+            Statistic<Environment> singleStat = new Statistic<Environment>(arrayList, molecule[i]);
+            HashMap<String, Float> statMap = new HashMap<>();
+            statMap.put("Avg", singleStat.getAvg());
+            statMap.put("Min", singleStat.getMin());
+            statMap.put("Max", singleStat.getMax());
+            statMap.put("Dev", singleStat.getDev());
+            statMap.put("Sum", singleStat.getSum());
+            allStatsmap.put(molecule[i],statMap);
+        }
+        return allStatsmap;
+    }
 }

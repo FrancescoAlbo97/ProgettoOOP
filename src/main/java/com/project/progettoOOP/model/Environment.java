@@ -1,18 +1,13 @@
 package com.project.progettoOOP.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.project.progettoOOP.utils.DateCustom;
+
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TimeZone;
-import java.util.concurrent.atomic.AtomicLong;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Environment implements Serializable {
@@ -22,7 +17,7 @@ public class Environment implements Serializable {
 
     @JsonPropertyDescription("Data, ora, minuti del 2016 a Varese")
     @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private Date date_time;
+    private String date_time;
     @JsonPropertyDescription("Monossido di azoto")
     private Float no;
     @JsonPropertyDescription("Biossido di azoto")
@@ -35,12 +30,22 @@ public class Environment implements Serializable {
     private Float o3;
     @JsonPropertyDescription("Monossido di carbonio")
     private Float co;
+    @JsonIgnore
+    private DateCustom myDate;
 
-    public Date getDate_time() {
+    public DateCustom getMyDate() {
+        return myDate;
+    }
+
+    public void setMyDate(DateCustom myDate) {
+        this.myDate = myDate;
+    }
+
+    public String getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(Date date_time) {
+    public void setDate_time(String date_time) {
         this.date_time = date_time;
     }
 
@@ -48,7 +53,7 @@ public class Environment implements Serializable {
         return no;
     }
 
-    public void setNo(float no) {
+    public void setNo(Float no) {
         this.no = no;
     }
 
@@ -56,7 +61,7 @@ public class Environment implements Serializable {
         return no2;
     }
 
-    public void setNo2(float no2) {
+    public void setNo2(Float no2) {
         this.no2 = no2;
     }
 
@@ -64,7 +69,7 @@ public class Environment implements Serializable {
         return nox;
     }
 
-    public void setNox(float nox) {
+    public void setNox(Float nox) {
         this.nox = nox;
     }
 
@@ -72,7 +77,7 @@ public class Environment implements Serializable {
         return so2;
     }
 
-    public void setSo2(float so2) {
+    public void setSo2(Float so2) {
         this.so2 = so2;
     }
 
@@ -80,7 +85,7 @@ public class Environment implements Serializable {
         return o3;
     }
 
-    public void setO3(float o3) {
+    public void setO3(Float o3) {
         this.o3 = o3;
     }
 
@@ -88,21 +93,14 @@ public class Environment implements Serializable {
         return co;
     }
 
-    public void setCo(float co) {
+    public void setCo(Float co) {
         this.co = co;
     }
-/*
-    public void selectMolecules(String[] molecule, float[] value, Date date, Environment environment) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method m = null;
-        this.setDate_time(date);
-        for (int i = 0; i < molecule.length; i++){
-            m = environment.getClass().getMethod("set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),Float.class);
-            m.invoke(this, value[i]);
-        }
-    }*/
 
-    public Environment(Date date_time, Float no, Float no2, Float nox, Float so2, Float o3, Float co) {
-        this.date_time = date_time;
+
+    public Environment(DateCustom date_time, Float no, Float no2, Float nox, Float so2, Float o3, Float co) {
+        this.myDate = date_time;
+        this.date_time = date_time.toString();
         this.no = no;
         this.no2 = no2;
         this.nox = nox;
@@ -120,12 +118,26 @@ public class Environment implements Serializable {
         this.co = co;
     }
 
+    public Environment( String no, String no2, String nox, String so2, String o3, String co) {
+       if (no == null) setNo(null);
+       else setNo(Float.parseFloat(no));
+        if (no2 == null) setNo2(null);
+        else setNo2(Float.parseFloat(no2));
+        if (nox == null) setNox(null);
+        else setNox(Float.parseFloat(nox));
+        if (so2 == null) setSo2(null);
+        else setSo2(Float.parseFloat(so2));
+        if (o3 == null) setO3(null);
+        else setO3(Float.parseFloat(o3));
+        if (co == null) setCo(null);
+        else setCo(Float.parseFloat(co));
+    }
+
     public Environment(String date_time, String no, String no2, String nox, String so2, String o3, String co) throws ParseException {
-        this(Float.parseFloat(no), Float.parseFloat(no2), Float.parseFloat(nox), Float.parseFloat(so2), Float.parseFloat(o3), Float.parseFloat(co));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-        Date date = formatter.parse(date_time);
-        this.date_time = date;
+        this(no, no2, nox, so2, o3, co);
+        DateCustom date = new DateCustom(date_time);
+        this.date_time = date.toString();
+        this.myDate = date;
     }
 
     @Override

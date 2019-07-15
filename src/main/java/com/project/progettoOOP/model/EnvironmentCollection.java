@@ -7,19 +7,6 @@ import java.util.ArrayList;
 
 public class EnvironmentCollection implements Filter<Environment, Object[]> {
 
-    @Override
-    public String toString() {
-        String line = "";
-        int conta = 0;
-        for(Environment e : environments){
-            if (conta < 30){
-                line += e.toString();
-                conta++;
-            }
-        }
-        return line;
-    }
-
     public static ArrayList<Environment> environments;
     private ArrayList<Environment> environmentsList;
     private FilterUtils<Environment> utils;
