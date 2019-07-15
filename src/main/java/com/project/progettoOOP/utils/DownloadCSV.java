@@ -30,10 +30,10 @@ public class DownloadCSV {
         String data = "";
         String line = "";
         try {
-            InputStreamReader inR = new InputStreamReader( in );
-            BufferedReader buf = new BufferedReader( inR );
+            InputStreamReader inR = new InputStreamReader(in);
+            BufferedReader buf = new BufferedReader(inR);
 
-            while ( ( line = buf.readLine() ) != null ) {
+            while ((line = buf.readLine()) != null) {
                 data += line;
             }
         } finally {
@@ -43,7 +43,7 @@ public class DownloadCSV {
         JSONObject objI = (obj.getJSONObject("result"));
         JSONArray objA = (objI.getJSONArray("resources"));
 
-        for(int i = 0; i < objA.length(); i++) {
+        for (int i = 0; i < objA.length(); i++) {
             if (objA.getJSONObject(i) instanceof JSONObject) {
                 JSONObject o1 = objA.getJSONObject(i);
                 String format = (String) o1.get("format");
@@ -65,7 +65,7 @@ public class DownloadCSV {
      */
     private static void downloadFile(String url, String fileName) throws IOException {
         File file = new File(fileName);
-        if (!file.exists()){
+        if (!file.exists()) {
             try (InputStream in = URI.create(url).toURL().openStream()) {
                 Files.copy(in, Paths.get(fileName));
             }
@@ -73,38 +73,3 @@ public class DownloadCSV {
     }
 
 }
-    /*throws Exception {
-        URL url = new URL("http://data.europa.eu/euodp/data/api/3/action/package_show?id=jrc-abcis-ig-2016");
-        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
-        connection.setRequestMethod("GET");
-        connection.connect();
-
-        int responsecode = connection.getResponseCode();
-        if(responsecode != 200) throw new RuntimeException("HttpResponseCode: " +responsecode);
-        else
-        {
-            Scanner sc = new Scanner(url.openStream());
-
-            while(sc.hasNext())
-            {
-                inline+=sc.nextLine();
-            }
-            sc.close();
-        }
-
-        JSONObject obj = (JSONObject) JSONValue.parseWithException(inline);
-        JSONObject objI = (JSONObject) (obj.get("result"));
-        JSONArray objA = (JSONArray) (objI.get("resources"));
-
-        for(int i=0; i < objA.length(); i++) {
-            if (objA.get(i) instanceof JSONObject) {
-                JSONObject o1 = (JSONObject) objA.get(i);
-                String format = (String) o1.get("format");
-                String urlD = (String) o1.get("url");
-                if (format.equals("CSV")) {
-                    downloadFile(urlD, "t1.csv");
-                }
-            }
-        }
-}*/

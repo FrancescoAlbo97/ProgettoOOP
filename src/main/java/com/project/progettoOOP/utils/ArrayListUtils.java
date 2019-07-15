@@ -3,6 +3,7 @@ package com.project.progettoOOP.utils;
 import java.util.ArrayList;
 
 public class ArrayListUtils<T>{
+
     public ArrayList<T> and(ArrayList<T> itemsList1, ArrayList<T> itemsList2) {
         ArrayList<T> list = new ArrayList<T>();
         for(T item1 : itemsList1) {

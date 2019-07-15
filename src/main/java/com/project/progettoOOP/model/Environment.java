@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.project.progettoOOP.utils.DateCustom;
 
 import java.io.Serializable;
-import java.text.ParseException;
 
 /**
  * Classe che modella un singolo elemento del dataset.Ogni elemento indica i valori di Monossido di azoto(no),biossido di azoto(no2)
