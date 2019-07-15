@@ -52,7 +52,6 @@
 		<dependency>
 			<groupId>com.vaadin.external.google</groupId>
 			<artifactId>android-json</artifactId>
-			<version>0.0.20131108.vaadin1</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -64,6 +63,11 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jsonSchema</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin.external.google</groupId>
+			<artifactId>android-json</artifactId>
+			<version>0.0.20131108.vaadin1</version>
 		</dependency>
 
 	</dependencies>

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class FilterUtils<T> {
-    public static boolean check(Object value, String operator, Object... th) {
+    private static boolean check(Object value, String operator, Object... th) {
         if (th.length == 1 && th[0] instanceof Number && value instanceof Number) {
             Double thC = ((Number)th[0]).doubleValue();
             Double valuec = ((Number)value).doubleValue();
@@ -40,47 +40,18 @@ public class FilterUtils<T> {
         return false;
     }
 
-    public Collection<T> select(Collection<T> src, String fieldName, String operator, Object... value) {
+    public Collection<T> select(Collection<T> src, String fieldName, String operator, Object... value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Collection<T> out = new ArrayList<T>();
         for(T item:src) {
-            try {
-                Method m = null;
-                if(isInteger(fieldName)) {
-                    m = item.getClass().getMethod("getYear", int.class);
-                } else {
-                    m = item.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
+            Method m = null;
+            m = item.getClass().getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1), null);
+            Object tmp = null;
+            tmp = m.invoke(item);
+            if (tmp != null){
+                if (FilterUtils.check(tmp, operator, value)) {
+                    out.add(item);
                 }
-                try {
-                    Object tmp = null;
-                    if(isInteger(fieldName)) {
-                        tmp = m.invoke(item, Integer.parseInt(fieldName));
-                    } else {
-                        tmp = m.invoke(item);
-                    }
-                    if(FilterUtils.check(tmp, operator, value))
-                        out.add(item);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (SecurityException e) {
-                e.printStackTrace();
             }
-        }
-        return out;
-    }
-
-    private static boolean isInteger(String fieldName) {
-        try {
-            Integer.parseInt(fieldName);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        }return out;
     }
 }
