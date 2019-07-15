@@ -56,6 +56,9 @@ public class Environment implements Serializable {
     public void setNo(Float no) {
         this.no = no;
     }
+    public void setNo(float no) {
+        this.no = no;
+    }
 
     public Float getNo2() {
         return no2;
@@ -64,12 +67,19 @@ public class Environment implements Serializable {
     public void setNo2(Float no2) {
         this.no2 = no2;
     }
+    public void setNo2(float no2) {
+        this.no2 = no2;
+    }
+
 
     public Float getNox() {
         return nox;
     }
 
     public void setNox(Float nox) {
+        this.nox = nox;
+    }
+    public void setNox(float nox) {
         this.nox = nox;
     }
 
@@ -80,6 +90,9 @@ public class Environment implements Serializable {
     public void setSo2(Float so2) {
         this.so2 = so2;
     }
+    public void setSo2(float so2) {
+        this.so2 = so2;
+    }
 
     public Float getO3() {
         return o3;
@@ -88,12 +101,18 @@ public class Environment implements Serializable {
     public void setO3(Float o3) {
         this.o3 = o3;
     }
+    public void setO3(float o3) {
+        this.o3 = o3;
+    }
 
     public Float getCo() {
         return co;
     }
 
     public void setCo(Float co) {
+        this.co = co;
+    }
+    public void setCo(float co) {
         this.co = co;
     }
 
@@ -138,6 +157,12 @@ public class Environment implements Serializable {
         DateCustom date = new DateCustom(date_time);
         this.date_time = date.toString();
         this.myDate = date;
+    }
+
+    public Environment(DateCustom date_time, String no, String no2, String nox, String so2, String o3, String co) throws ParseException {
+        this(no, no2, nox, so2, o3, co);
+        this.myDate = date_time;
+        this.date_time = date_time.toString();
     }
 
     @Override

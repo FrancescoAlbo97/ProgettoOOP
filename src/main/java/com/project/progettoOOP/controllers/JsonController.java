@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -51,7 +52,7 @@ public class JsonController {
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
+            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, ParseException {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         if (!molecule[0].equals("all")) {
@@ -67,26 +68,24 @@ public class JsonController {
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, JsonProcessingException, JSONException {
+    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ParseException, JsonProcessingException {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         if (!molecule[0].equals("all")){
             ArrayList<Environment> selectedDataByMolecule = new ArrayList<>();
             selectedDataByMolecule = selectByMolecule(molecule);
-            String result = getFilteredStatistics(selectedDataByMolecule, molecule);
-            JSONObject json = new JSONObject(result);
-            return json.toString();
+            HashMap<String, Statistic<Environment>> map = new HashMap<>();
+            map = getFilteredStatistics(selectedDataByMolecule, molecule);
+            ObjectMapper mapper = new ObjectMapper();
+            String result = mapper.writeValueAsString(map);
+            return result;
         } else{
-            String[] molecules = new String[6];
-            molecules[0] = "no";
-            molecules[1] = "no2";
-            molecules[2] = "nox";
-            molecules[3] = "so2";
-            molecules[4] = "o3";
-            molecules[5] = "co";
-            String result = getFilteredStatistics(selectedData, molecules);
-            JSONObject json = new JSONObject(result);
-            return json.toString();
+            String[] molecules = new String[]{"no", "no2", "nox", "so2", "o3", "co"};
+            HashMap<String, Statistic<Environment>> map = new HashMap<>();
+            map = getFilteredStatistics(selectedData, molecules);
+            ObjectMapper mapper = new ObjectMapper();
+            String result = mapper.writeValueAsString(map);
+            return result;
         }
     }
 
@@ -172,40 +171,34 @@ public class JsonController {
         }
     }
 
-    private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ParseException {
         Method m1 = null;
         Method m2 = null;
-        ArrayList<Environment> arrayList = new ArrayList<>();/*
+        ArrayList<Environment> arrayList = new ArrayList<>();
         for (Environment item : selectedData) {
-            Float value = null;
-            String nullValue = "999999999";
-            Environment environment = new Environment(item.getDataTimeString(),nullValue,nullValue,nullValue,nullValue,nullValue,nullValue);
+            //Float value = null;
+            String nullValue = null;
+            Environment environment = new Environment(item.getMyDate(),nullValue,nullValue,nullValue,nullValue,nullValue,nullValue);
             for (int i=0; i < molecule.length; i++){
                 m1 = item.getClass().getMethod("get"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
-                value = (Float) m1.invoke(item);
-                m2 = environment.getClass().getMethod( "set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1), Float.TYPE);
-                Object obj = m2.invoke(environment, value);
+                Float value = (Float) m1.invoke(item);
+                m2 = environment.getClass().getMethod( "set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1), float.class);
+                if (!(value == null)) m2.invoke(environment, value.floatValue());
             }
             arrayList.add(environment);
-        }*/
+        }
         return arrayList;
     }
 
-    private String getFilteredStatistics(ArrayList<Environment> arrayList, String[] molecule) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        /*
-        if ( month.get(0) == -1){
-                HashMap<String, HashMap<String,Float>> allStatsmap = new HashMap<>();
-                allStatsmap = getStatisticOfMolecule(arrayList, molecule);
-                ObjectMapper mapper = new ObjectMapper();
-                return mapper.writeValueAsString(allStatsmap);
+    private HashMap<String, Statistic<Environment>> getFilteredStatistics(ArrayList<Environment> arrayList, String[] molecule) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        HashMap<String, Statistic<Environment>> allStatsmap = new HashMap<>();
+        for(int i = 0; i < molecule.length; i++) {
+            Statistic<Environment> singleStat = new Statistic<Environment>(arrayList, molecule[i]);
+            allStatsmap.put(molecule[i],singleStat);
         }
-        else{
-            return "ciao";
-            //creare un ArrayList di Arralist per finire
-        }*/
-        return "ciao";
+        return allStatsmap;
     }
-
+/*
     private HashMap<String, HashMap<String,Float>> getStatisticOfMolecule(ArrayList<Environment> arrayList, String[] molecule) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         HashMap<String, HashMap<String,Float>> allStatsmap = new HashMap<>();
@@ -220,5 +213,5 @@ public class JsonController {
             allStatsmap.put(molecule[i],statMap);
         }
         return allStatsmap;
-    }
+    }*/
 }

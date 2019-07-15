@@ -1,13 +1,8 @@
 package com.project.progettoOOP.utils;
 
-import com.project.progettoOOP.model.Environment;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 
 public class Statistic<T> {
 
@@ -16,34 +11,14 @@ public class Statistic<T> {
     private float max;
     private float dev;
     private float sum;
-/*
-    public Statistic(ArrayList<T> arrayList, String name) {
-        ArrayList<Float> values = new ArrayList<>();
-        for (T item : arrayList) {
-            Field f = null;
-            try {
-                f = item.getClass().getField(name);
-                values.add((Float) f.get(item));
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        this.avg = getAvg(values);
-        this.min = getMin(values);
-        this.max = getMax(values);
-        this.dev = getDev(values);
-        this.sum = getSum(values);
-    }
-*/
 
     public Statistic(ArrayList<T> arrayList, String name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         ArrayList<Float> values = new ArrayList<>();
         for (T item : arrayList) {
             Method m = null;
             m = item.getClass().getMethod("get"+name.substring(0, 1).toUpperCase()+name.substring(1),null);
-            values.add((Float) m.invoke(item));
+            Float value = (Float) m.invoke(item);
+            if(value != null) values.add(value);
         }
         this.avg = getAvg(values);
         this.min = getMin(values);
@@ -123,7 +98,7 @@ public class Statistic<T> {
 
     private float getMin(ArrayList<Float> arrayList) {
         float currentMin = arrayList.get(0);
-        for (int i = 1; i < arrayList.size(); i++) {
+        for (int i = 0; i < arrayList.size(); i++) {
             if(arrayList.get(i) < currentMin){
                 currentMin = arrayList.get(i);
             }
@@ -133,7 +108,7 @@ public class Statistic<T> {
 
     private float getMax(ArrayList<Float> arrayList) {
         float currentMax = arrayList.get(0);
-        for (int i = 1; i < arrayList.size(); i++) {
+        for (int i = 0; i < arrayList.size(); i++) {
             if(arrayList.get(i) > currentMax){
                 currentMax = arrayList.get(i);
             }
@@ -143,7 +118,7 @@ public class Statistic<T> {
 
     private float getSum(ArrayList<Float> arrayList) {
         float sum = 0;
-        for (int i = 1; i < arrayList.size(); i++) {
+        for (int i = 0; i < arrayList.size(); i++) {
             sum += arrayList.get(i);
             }
         return sum;
