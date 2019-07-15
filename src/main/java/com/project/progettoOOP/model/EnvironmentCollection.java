@@ -13,8 +13,14 @@ public class EnvironmentCollection implements Filter<Environment, Object[]> {
     private ArrayList<Environment> environmentsList;
     private FilterUtils<Environment> utils;
 
+    public EnvironmentCollection(ArrayList<Environment> environmentsList, FilterUtils<Environment> utils) {
+        this.environmentsList = environmentsList;
+        this.utils = utils;
+    }
+
     public EnvironmentCollection(ArrayList<Environment> environmentsList) {
         this.environmentsList = environmentsList;
+        this.utils = new FilterUtils<>();
     }
 
     public ArrayList<Environment> getEnvironmentsList() {

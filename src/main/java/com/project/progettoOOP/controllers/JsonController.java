@@ -8,6 +8,8 @@ import com.project.progettoOOP.model.Environment;
 import com.project.progettoOOP.model.EnvironmentCollection;
 import com.project.progettoOOP.utils.DateCustom;
 import com.project.progettoOOP.utils.Statistic;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -72,10 +74,21 @@ public class JsonController {
         return result;
     }
 
-    @RequestMapping(value="/environment", method=RequestMethod.POST, produces="application/json")
-    public String saveEnvironmentPost(@RequestBody(required = false) String json) {
+    @RequestMapping(value="/filter", method=RequestMethod.POST, produces="application/json")
+    public String getFilteredValues(
+            @RequestBody(required = false) String jsonString) throws Exception {
+        JSONObject json = null;
+            ArrayList<Environment> result = null;
+            if(jsonString != null){
+                json = new JSONObject(jsonString);
+                result = getFilteredData(EnvironmentCollection.environments, json);
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            if(result != null) {
+                return mapper.writeValueAsString(result);
+            } else return mapper.writeValueAsString(EnvironmentCollection.environments);
 
-        return EnvironmentCollection.environments.get(0).toString();
+        //return EnvironmentCollection.environments.get(0).toString();
     }
 
     private void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
@@ -181,20 +194,37 @@ public class JsonController {
         }
         return allStatsmap;
     }
-/*
-    private HashMap<String, HashMap<String,Float>> getStatisticOfMolecule(ArrayList<Environment> arrayList, String[] molecule) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
-        HashMap<String, HashMap<String,Float>> allStatsmap = new HashMap<>();
-        for(int i = 0; i < molecule.length; i++){
-            Statistic<Environment> singleStat = new Statistic<Environment>(arrayList, molecule[i]);
-            HashMap<String, Float> statMap = new HashMap<>();
-            statMap.put("Avg", singleStat.getAvg());
-            statMap.put("Min", singleStat.getMin());
-            statMap.put("Max", singleStat.getMax());
-            statMap.put("Dev", singleStat.getDev());
-            statMap.put("Sum", singleStat.getSum());
-            allStatsmap.put(molecule[i],statMap);
+    private ArrayList<Environment> getFilteredData(ArrayList<Environment> arrayList, JSONObject json) throws Exception {
+        String field = (String) json.keys().next();
+        if (field.contains("$or")) {
+
+        } else if (field.contains("$and")) {
+
+        } else {
+            JSONObject newJson = json.getJSONObject(field);
+            String operator = (String) newJson.keys().next();
+            EnvironmentCollection environmentCollection = new EnvironmentCollection(arrayList);
+            switch (operator) {
+                case "$bt":
+                    double min = newJson.getJSONArray(operator).getDouble(0);
+                    double max = newJson.getJSONArray(operator).getDouble(1);
+                    return environmentCollection.filterField(field, operator,  min, max);
+                case "$in":
+                case "$nin":
+                    double[] values = null;
+                    for(int i= 0; i < newJson.getJSONArray(operator).length(); i++) {
+                        values[i] = newJson.getJSONArray(operator).getDouble(i);
+                    }
+                    return environmentCollection.filterField(field, operator, values);
+                case "$eq":
+                case "$not":
+                case "$lt":
+                case "$gt":
+                    double value = newJson.getDouble(operator);
+                    return environmentCollection.filterField(field, operator, value);
+            }
         }
-        return allStatsmap;
-    }*/
+        throw new Exception();
+    }
 }

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class FilterUtils<T> {
-    public static boolean check(Object value, String operator, Object... th) {
+    private static boolean check(Object value, String operator, Object... th) {
         if (th.length == 1 && th[0] instanceof Number && value instanceof Number) {
             Double thC = ((Number)th[0]).doubleValue();
             Double valuec = ((Number)value).doubleValue();
@@ -44,21 +44,14 @@ public class FilterUtils<T> {
         Collection<T> out = new ArrayList<T>();
         for(T item:src) {
             Method m = null;
-            m = item.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
+            m = item.getClass().getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1), null);
             Object tmp = null;
             tmp = m.invoke(item);
-            if(FilterUtils.check(tmp, operator, value))
-                out.add(item);
-        }
-        return out;
-    }
-
-    private static boolean isInteger(String fieldName) {
-        try {
-            Integer.parseInt(fieldName);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+            if (tmp != null){
+                if (FilterUtils.check(tmp, operator, value)) {
+                    out.add(item);
+                }
+            }
+        }return out;
     }
 }
