@@ -1,6 +1,5 @@
 package com.project.progettoOOP.utils;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -11,25 +10,22 @@ public class FilterUtils<T> {
     private static boolean check(Object value, String operator, Object... th) {
         if (th.length == 1 && th[0] instanceof Number && value instanceof Number) {
             Double thC = ((Number)th[0]).doubleValue();
-            Double valuec = ((Number)value).doubleValue();
+            Double valueC = ((Number)value).doubleValue();
             if (operator.equals("$eq"))
                 return value.equals(th[0]);
             else if (operator.equals("$not"))
                 return !value.equals(th[0]);
             else if (operator.equals("$gt"))
-                return valuec > thC;
+                return valueC > thC;
             else if (operator.equals("$lt"))
-                return valuec < thC;
-        } else if(th.length == 1 && th[0] instanceof String && value instanceof String) {
-            if(operator.equals("$eq") || operator.equals("$in")) return value.equals(th[0]);
-            else return !value.equals(th[0]);
+                return valueC < thC;
         } else if(th.length > 1) {
             if (operator.equals("$bt")) {
                 if(th.length == 2 && th[0] instanceof Number && th[1] instanceof Number) {
                     Double min = ((Number)th[0]).doubleValue();
                     Double max = ((Number)th[1]).doubleValue();
-                    Double valuec = ((Number)value).doubleValue();
-                    return valuec > min && valuec < max;
+                    Double valueC = ((Number)value).doubleValue();
+                    return valueC > min && valueC < max;
                 }
             }
             else if (operator.equals("$in"))

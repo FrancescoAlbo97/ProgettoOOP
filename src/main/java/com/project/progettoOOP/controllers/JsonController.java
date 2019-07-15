@@ -6,9 +6,10 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.progettoOOP.model.Environment;
 import com.project.progettoOOP.model.EnvironmentCollection;
+import com.project.progettoOOP.utils.ArrayListUtils;
 import com.project.progettoOOP.utils.DateCustom;
 import com.project.progettoOOP.utils.Statistic;
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class JsonController {
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, ParseException {
+            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ParseException {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         if (!molecule[0].equals("all")) {
@@ -87,8 +88,6 @@ public class JsonController {
             if(result != null) {
                 return mapper.writeValueAsString(result);
             } else return mapper.writeValueAsString(EnvironmentCollection.environments);
-
-        //return EnvironmentCollection.environments.get(0).toString();
     }
 
     private void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
@@ -167,12 +166,11 @@ public class JsonController {
         }
     }
 
-    private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ParseException {
+    private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
         Method m1 = null;
         Method m2 = null;
         ArrayList<Environment> arrayList = new ArrayList<>();
         for (Environment item : selectedData) {
-            //Float value = null;
             String nullValue = null;
             Environment environment = new Environment(item.getMyDate(),nullValue,nullValue,nullValue,nullValue,nullValue,nullValue);
             for (int i=0; i < molecule.length; i++){
@@ -198,9 +196,25 @@ public class JsonController {
     private ArrayList<Environment> getFilteredData(ArrayList<Environment> arrayList, JSONObject json) throws Exception {
         String field = (String) json.keys().next();
         if (field.contains("$or")) {
-
+            ArrayListUtils<Environment> itemListUtil = new ArrayListUtils<>();
+            ArrayList<Environment> itemList = new ArrayList<>();
+            JSONArray jsonArray = json.getJSONArray(field);
+            for (int i = 0; i < jsonArray.length()-1 ; i++) {
+                if(json.getJSONArray(field).get(i) instanceof JSONObject && json.getJSONArray(field).get(i+1) instanceof JSONObject) {
+                    itemList = itemListUtil.or(getFilteredData(arrayList,jsonArray.getJSONObject(i)),getFilteredData(arrayList,jsonArray.getJSONObject(i+1)));
+                }
+            }
+            return itemList;
         } else if (field.contains("$and")) {
-
+            ArrayListUtils<Environment> itemListUtil = new ArrayListUtils<>();
+            ArrayList<Environment> itemList = new ArrayList<>();
+            JSONArray jsonArray = json.getJSONArray(field);
+            for (int i = 0; i < jsonArray.length()-1 ; i++) {
+                if(json.getJSONArray(field).get(i) instanceof JSONObject && json.getJSONArray(field).get(i+1) instanceof JSONObject) {
+                    itemList = itemListUtil.and(getFilteredData(arrayList,jsonArray.getJSONObject(i)),getFilteredData(arrayList,jsonArray.getJSONObject(i+1)));
+                }
+            }
+            return itemList;
         } else {
             JSONObject newJson = json.getJSONObject(field);
             String operator = (String) newJson.keys().next();
