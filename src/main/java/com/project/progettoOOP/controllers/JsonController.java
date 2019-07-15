@@ -6,26 +6,17 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.project.progettoOOP.model.Environment;
 import com.project.progettoOOP.model.EnvironmentCollection;
-import com.project.progettoOOP.service.EnvironmentService;
 import com.project.progettoOOP.utils.DateCustom;
 import com.project.progettoOOP.utils.Statistic;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 @RestController
@@ -56,11 +47,9 @@ public class JsonController {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         if (!molecule[0].equals("all")) {
-            ArrayList<Environment> selectedDataByMolecule = new ArrayList<>();
-            selectedDataByMolecule = selectByMolecule(molecule);
-            return selectedDataByMolecule;
+            selectedData = selectByMolecule(molecule);
         }
-        else return selectedData;
+        return selectedData;
     }
 
     @RequestMapping(value = "/statistic", method = RequestMethod.GET, produces="application/json")
@@ -72,21 +61,15 @@ public class JsonController {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         if (!molecule[0].equals("all")){
-            ArrayList<Environment> selectedDataByMolecule = new ArrayList<>();
-            selectedDataByMolecule = selectByMolecule(molecule);
-            HashMap<String, Statistic<Environment>> map = new HashMap<>();
-            map = getFilteredStatistics(selectedDataByMolecule, molecule);
-            ObjectMapper mapper = new ObjectMapper();
-            String result = mapper.writeValueAsString(map);
-            return result;
+            selectedData = selectByMolecule(molecule);
         } else{
-            String[] molecules = new String[]{"no", "no2", "nox", "so2", "o3", "co"};
-            HashMap<String, Statistic<Environment>> map = new HashMap<>();
-            map = getFilteredStatistics(selectedData, molecules);
-            ObjectMapper mapper = new ObjectMapper();
-            String result = mapper.writeValueAsString(map);
-            return result;
+            molecule = new String[]{"no", "no2", "nox", "so2", "o3", "co"};
         }
+        HashMap<String, Statistic<Environment>> map = new HashMap<>();
+        map = getFilteredStatistics(selectedData, molecule);
+        ObjectMapper mapper = new ObjectMapper();
+        String result = mapper.writeValueAsString(map);
+        return result;
     }
 
     @RequestMapping(value="/environment", method=RequestMethod.POST, produces="application/json")
