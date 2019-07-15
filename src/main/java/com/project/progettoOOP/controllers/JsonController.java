@@ -204,7 +204,9 @@ public class JsonController {
                     itemList = itemListUtil.or(getFilteredData(arrayList,jsonArray.getJSONObject(i)),getFilteredData(arrayList,jsonArray.getJSONObject(i+1)));
                 }
             }
-            return itemList;
+            if(json.getJSONArray(field).get(0) instanceof JSONObject && itemList.isEmpty())
+                return getFilteredData(arrayList,jsonArray.getJSONObject(0));
+            else return itemList;
         } else if (field.contains("$and")) {
             ArrayListUtils<Environment> itemListUtil = new ArrayListUtils<>();
             ArrayList<Environment> itemList = new ArrayList<>();
@@ -214,7 +216,9 @@ public class JsonController {
                     itemList = itemListUtil.and(getFilteredData(arrayList,jsonArray.getJSONObject(i)),getFilteredData(arrayList,jsonArray.getJSONObject(i+1)));
                 }
             }
-            return itemList;
+            if(json.getJSONArray(field).get(0) instanceof JSONObject && itemList.isEmpty())
+                return getFilteredData(arrayList,jsonArray.getJSONObject(0));
+            else return itemList;
         } else {
             JSONObject newJson = json.getJSONObject(field);
             String operator = (String) newJson.keys().next();
