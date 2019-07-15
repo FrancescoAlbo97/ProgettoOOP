@@ -20,7 +20,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * Controller dell'applicazione: è il cuore del''applicazione.Gestisce tutte le rotte dell'applicazione.
+ */
 @RestController
 public class JsonController {
 
@@ -31,6 +33,11 @@ public class JsonController {
 
     //public JsonController(){ }
 
+    /**
+     * Rotta che mostra i metadati di ogni oggetto presente nel dataset.
+     * @return Restituisce i metadati sotto forma di JSON.
+     * @throws JsonProcessingException dovuta ai metodi generateSchema e writeValueAsString
+     */
     @RequestMapping(value = "/metadata", method = RequestMethod.GET, produces="application/json")
     String getMetadata() throws JsonProcessingException {
 
@@ -40,12 +47,24 @@ public class JsonController {
             return mapper.writeValueAsString(jsonSchema);
     }
 
+    /**
+     * Rotta che mostra i dati sotto forma di JSON.
+     * @param monthString parametri preso dal URL.
+     * @param dayString parametri preso dal URL.
+     * @param molecule parametri preso dal URL.
+     * @return Ritorna i dati sotto forma di JSON.
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws NoSuchFieldException
+     * @throws ParseException
+     */
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
     ArrayList<Environment> getData(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, ParseException {
+            ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ParseException {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         if (!molecule[0].equals("all")) {
@@ -54,6 +73,18 @@ public class JsonController {
         return selectedData;
     }
 
+    /**
+     * Rotta che permette di calcolare qualsiasi tipo di statistica sui dati.
+     * @param monthString parametri preso dal URL.
+     * @param dayString parametri preso dal URL.
+     * @param molecule parametri preso dal URL.
+     * @return Ritorna la statistica voluta.
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ParseException
+     * @throws JsonProcessingException
+     */
     @RequestMapping(value = "/statistic", method = RequestMethod.GET, produces="application/json")
     String getStatistics(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
@@ -74,6 +105,7 @@ public class JsonController {
         return result;
     }
 
+
     @RequestMapping(value="/filter", method=RequestMethod.POST, produces="application/json")
     public String getFilteredValues(
             @RequestBody(required = false) String jsonString) throws Exception {
@@ -91,6 +123,11 @@ public class JsonController {
         //return EnvironmentCollection.environments.get(0).toString();
     }
 
+    /**
+     * Metodo che controlla se sono stati inseriti dei mesi e dei giorni,se si verifica che non ci siano errori.
+     * @param monthString stringa che indica il mese.
+     * @param dayString stringa che indica il giorno.
+     */
     private void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
         if (monthString.get(0).equals("0")) {
             monthString.clear();
@@ -104,6 +141,13 @@ public class JsonController {
         }
     }
 
+    /**
+     * Metodo che verifica se il giorno inserito e valido per il mese/i in questione(mi da errore nel caso questo non sia
+     * valido)e parsa tale mese/i e giorni.
+     * @param month stringa che mi indica il mese.
+     * @param day stringa che mi indica il giorno.
+     * @return Ritorna true nel caso di successo,false atrimenti.
+     */
     private boolean checkDateAndParse(ArrayList<String> month, ArrayList<String> day) {
         HashMap<Integer,ArrayList<Integer>> daysForMonths = new HashMap<>();
         for (int i = 0; i < month.size(); i++) {
@@ -153,6 +197,10 @@ public class JsonController {
         return true;
     }
 
+    /**
+     * Metodo che va a pescare i dati dal hash map passata come parametro, confrontando la collezione con ciò che vuole l'utente.
+     * @param daysForMonths indica i giorni che l'utente vuole.
+     */
     private void selectDataByMonthAndDate(HashMap<Integer,ArrayList<Integer>> daysForMonths){
         for (Environment obj : EnvironmentCollection.environments) {
             for (Integer m : daysForMonths.keySet()){
@@ -167,6 +215,15 @@ public class JsonController {
         }
     }
 
+    /**
+     * Metodo che va a pescare i dati passando il nome della molecola di cui si vuole avere informazioni.
+     * @param molecule nome molecola.
+     * @return Restituisce una lista con gli stessi environment ma che ha solo la molecola desiderata.
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws ParseException
+     */
     private ArrayList<Environment> selectByMolecule(String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ParseException {
         Method m1 = null;
         Method m2 = null;

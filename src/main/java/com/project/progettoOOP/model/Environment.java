@@ -21,7 +21,6 @@ public class Environment implements Serializable {
     //Unvalidated 10 min averages in UTC time-base of NO, NO2, O3 and SO2, all in ppb, CO in ppm
 
     @JsonPropertyDescription("Data, ora, minuti del 2016 a Varese")
-    @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private String date_time;
     @JsonPropertyDescription("Monossido di azoto")
     private Float no;
