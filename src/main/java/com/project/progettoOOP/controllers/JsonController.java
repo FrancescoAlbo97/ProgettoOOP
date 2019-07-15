@@ -97,33 +97,15 @@ public class JsonController {
     }
 
     private void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
-        if (!monthString.get(0).equals("0") && !dayString.get(0).equals("0")) {
-            if (!checkDateAndParse(monthString,dayString)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
-            }
-        }
-        else if (monthString.get(0).equals("0") && (!dayString.get(0).equals("0"))){
+        if (monthString.get(0).equals("0")) {
             monthString.clear();
-            for (int i = 1; i < 13; i++){
-                monthString.add(String.valueOf(i));
-            }
-            if (!checkDateAndParse(monthString,dayString)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
+            for (int i = 0; i < 12; i++){
+                int value = i + 1;
+                monthString.add(String.valueOf(value));
             }
         }
-        else if (!monthString.get(0).equals("0") && dayString.get(0).equals("0")){
-            if (!checkDateAndParse(monthString,dayString)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
-            }
-        }
-        else {  //vuoti entrambi
-            monthString.clear();
-            for (int i = 1; i < 13; i++){
-                monthString.add(String.valueOf(i));
-            }
-            if (!checkDateAndParse(monthString,dayString)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
-            }
+        if (!checkDateAndParse(monthString,dayString)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
         }
     }
 
@@ -168,7 +150,9 @@ public class JsonController {
                     }
                     daysForMonths.put(monthValue,days);
                 }
-            } else return false;
+            } else{
+                return false;
+            }
         }
         selectDataByMonthAndDate(daysForMonths);
         return true;
