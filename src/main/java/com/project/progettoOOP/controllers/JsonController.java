@@ -60,7 +60,7 @@ public class JsonController {
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
             @RequestParam(value = "molecule", required = false, defaultValue = "all") String[] molecule
-    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ParseException, JsonProcessingException {
+    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, JsonProcessingException {
         selectedData.clear();
         checkDateFormat(monthString, dayString);
         if (!molecule[0].equals("all")){

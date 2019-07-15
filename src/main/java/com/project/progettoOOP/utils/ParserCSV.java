@@ -5,8 +5,6 @@ import com.project.progettoOOP.model.Environment;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Classe che mi permette di fare il parsing del CSV già scaricato
