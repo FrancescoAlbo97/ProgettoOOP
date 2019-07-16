@@ -169,10 +169,14 @@ public class DateCustom{
      */
     public String toString(){  //ex 2016-12-29 04:40:00.000
         String result = (year + "-" + checkFormat(month) + "-" + checkFormat(day)+ " " +checkFormat(hour)+ ":" +checkFormat(minute) + ":" + checkFormat(second) + ".00" + milliSecond);
-
         return result;
     }
 
+    /**
+     * Metodo per restituire la data in formato iniziale del csv 2016-12-29 04:40:00.000
+     * @param var mese,giorno,ora,minuto,secondo da controllare
+     * @return mese,giorno,ora,minuto,secondo come stringa nel formato corretto
+     */
     private String checkFormat(Integer var){
         if( var < 10){
             return ("0"+var);
