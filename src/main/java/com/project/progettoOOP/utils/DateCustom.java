@@ -168,9 +168,15 @@ public class DateCustom{
      * @return Ritorna la stringa.
      */
     public String toString(){  //ex 2016-12-29 04:40:00.000
-        String result = (year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + "." + milliSecond);
+        String result = (year + "-" + checkFormat(month) + "-" + checkFormat(day)+ " " +checkFormat(hour)+ ":" +checkFormat(minute) + ":" + checkFormat(second) + ".00" + milliSecond);
 
         return result;
+    }
+
+    private String checkFormat(Integer var){
+        if( var < 10){
+            return ("0"+var);
+        }else return String.valueOf(var);
     }
 
     /**
