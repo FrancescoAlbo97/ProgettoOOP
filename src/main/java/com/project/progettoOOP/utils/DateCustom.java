@@ -167,8 +167,9 @@ public class DateCustom{
      * Metodo che fa vedere la data in formato stringa.
      * @return Ritorna la stringa.
      */
-    public String toString(){
-        String result = (year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second+"."+milliSecond);
+    public String toString(){  //ex 2016-12-29 04:40:00.000
+        String result = (year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + "." + milliSecond);
+
         return result;
     }
 
