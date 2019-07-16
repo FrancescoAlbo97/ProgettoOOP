@@ -30,8 +30,8 @@ public class Statistic<T> {
         for (T item : arrayList) {
             Method m = null;
             m = item.getClass().getMethod("get"+name.substring(0, 1).toUpperCase()+name.substring(1),null);
-            Float value = (Float) m.invoke(item);
-            if(value != null) values.add(value);
+            Object value = m.invoke(item);
+            if(value != null) values.add((Float) value);
         }
         this.avg = getAvg(values);
         this.min = getMin(values);

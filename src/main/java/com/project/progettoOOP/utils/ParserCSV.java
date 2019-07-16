@@ -28,7 +28,7 @@ public class ParserCSV {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(COMMA_DELIMITER);
                 for(int i = 1; i < 7; i++){
-                    if (values[i].contains("-") && !(values[i].contains("E"))){
+                    if (values[i].charAt(0) == '-'){
                         values[i] = null;
                     }
                 }

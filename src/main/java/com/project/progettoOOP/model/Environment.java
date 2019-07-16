@@ -20,7 +20,6 @@ public class Environment implements Serializable {
     //Unvalidated 10 min averages in UTC time-base of NO, NO2, O3 and SO2, all in ppb, CO in ppm
 
     @JsonPropertyDescription("Data, ora, minuti del 2016 a Varese")
-    @JsonFormat( timezone = "GMT+1", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private String date_time;
     @JsonPropertyDescription("Monossido di azoto")
     private Float no;
@@ -38,15 +37,15 @@ public class Environment implements Serializable {
     private DateCustom myDate;
 
     /**
-     * Metodo che permette di prendere la data di tipo DateCustom.
-     * @return Ritorna la data.
+     * Metodo che permette di prendere la Data di tipo DateCustom.
+     * @return Ritorna la Data.
      */
     public DateCustom getMyDate() {
         return myDate;
     }
 
     /**
-     * Metodo che permette di inserire la data di tipo DateCustom.
+     * Metodo che permette di inserire la Data di tipo DateCustom.
      * @param myDate Data da inserire.
      */
     public void setMyDate(DateCustom myDate) {
@@ -54,16 +53,16 @@ public class Environment implements Serializable {
     }
 
     /**
-     * Metodo che permette di prendere la data di tipo stringa.
-     * @return Ritorna la stringa che indica la data.
+     * Metodo che permette di prendere la Data di tipo stringa.
+     * @return Ritorna la stringa che indica la Data.
      */
     public String getDate_time() {
         return date_time;
     }
 
     /**
-     * Metodo che permette di inserire la data di tipo stringa.
-     * @param date_time Stringa da inserire che indica la data.
+     * Metodo che permette di inserire la Data di tipo stringa.
+     * @param date_time Stringa da inserire che indica la Data.
      */
     public void setDate_time(String date_time) {
         this.date_time = date_time;
@@ -86,14 +85,6 @@ public class Environment implements Serializable {
     }
 
     /**
-     *  Metodo che permette di inserire la molecola No.
-     *  @param no Valore da inserire.
-     */
-    public void setNo(float no) {
-        this.no = no;
-    }
-
-    /**
      * Metodo che permette di prendere la molecola No2.
      * @return Ritrona il valore della molecola di No2
      */
@@ -106,14 +97,6 @@ public class Environment implements Serializable {
      * @param no2 Valore da inserire
      */
     public void setNo2(Float no2) {
-        this.no2 = no2;
-    }
-
-    /**
-     * Metodo che permette di inserire la molecola No2.
-     * @param no2 Valore da inserire.
-     */
-    public void setNo2(float no2) {
         this.no2 = no2;
     }
 
@@ -134,14 +117,6 @@ public class Environment implements Serializable {
     }
 
     /**
-     * Metodo che permette di inserire la molecola Nox.
-     * @param nox Valore da inserire.
-     */
-    public void setNox(float nox) {
-        this.nox = nox;
-    }
-
-    /**
      * Metodo che permette di prendere la molecola So2.
      * @return Ritorna il valore della molecola di So2.
      */
@@ -154,14 +129,6 @@ public class Environment implements Serializable {
      * @param so2 Valore da inserire.
      */
     public void setSo2(Float so2) {
-        this.so2 = so2;
-    }
-
-    /**
-     * Metodo che permette di inserire la molecola So2.
-     * @param so2 Valore da inserire.
-     */
-    public void setSo2(float so2) {
         this.so2 = so2;
     }
 
@@ -182,14 +149,6 @@ public class Environment implements Serializable {
     }
 
     /**
-     * Metodo che permette di inserire la molecola O3.
-     * @param o3 Valore da inserire.
-     */
-    public void setO3(float o3) {
-        this.o3 = o3;
-    }
-
-    /**
      * Metodo che permette di inserire la molecola Co.
      * @return Ritorna il valore della molecola di Co.
      */
@@ -206,16 +165,8 @@ public class Environment implements Serializable {
     }
 
     /**
-     * Metodo che permette di inserire la molecola di Co.
-     * @param co Valore da inserire.
-     */
-    public void setCo(float co) {
-        this.co = co;
-    }
-
-    /**
      * Costruttore della classe.
-     * @param date_time la data passata come parametro.
+     * @param date_time la Data passata come parametro.
      * @param no Indica la molecola di No.
      * @param no2 Indica la molecola di No2.
      * @param nox Indica la molecola di NoX.
@@ -277,8 +228,8 @@ public class Environment implements Serializable {
     }
 
     /**
-     * Costruttore della classe che serve nel caso in cui la data è una stringa.
-     * @param date_time Indica la data.
+     * Costruttore della classe che serve nel caso in cui la Data è una stringa.
+     * @param date_time Indica la Data.
      * @param no Indica la molecola di No.
      * @param no2 Indica la molecola di No2.
      * @param nox Indica la molecola di NoX.
@@ -294,8 +245,8 @@ public class Environment implements Serializable {
     }
 
     /**
-     * Costruttore che permette di trasformare la data in tipo stringa.
-     * @param date_time Indica la data
+     * Costruttore che permette di trasformare la Data in tipo stringa.
+     * @param date_time Indica la Data
      * @param no Indica la molecola di No.
      * @param no2 Indica la molecola di No2.
      * @param nox Indica la molecola di NoX.

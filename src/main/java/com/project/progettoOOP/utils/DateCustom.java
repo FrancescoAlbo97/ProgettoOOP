@@ -1,7 +1,7 @@
 package com.project.progettoOOP.utils;
 
 /**
- * Serve per recuperare il formato data dal CSV senza avere il problema dell'ora legale.
+ * Serve per recuperare il formato Data dal CSV senza avere il problema dell'ora legale.
  */
 public class DateCustom{
 
@@ -14,8 +14,8 @@ public class DateCustom{
     private Integer milliSecond;
 
     /**
-     * Costruttore che prende la Stringa,che rappresenta la data presa dal CSV, e la parsa.
-     * @param dataString Stringa che rappresenta la data
+     * Costruttore che prende la Stringa,che rappresenta la Data presa dal CSV, e la parsa.
+     * @param dataString Stringa che rappresenta la Data
      */
     public DateCustom(String dataString) {              //ex 2016-12-29 04:40:00.000
         String[] dataTime = dataString.split(" ");
@@ -164,7 +164,7 @@ public class DateCustom{
     }
 
     /**
-     * Metodo che fa vedere la data in formato stringa.
+     * Metodo che fa vedere la Data in formato stringa.
      * @return Ritorna la stringa.
      */
     public String toString(){

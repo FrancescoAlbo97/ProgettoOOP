@@ -20,7 +20,7 @@ public class ProgettoOopApplication {
      * @param args eventuali parametri passati dal CLI
      * @throws Exception dovuta al metodo statico getCSV
      */
-    public static final String FILE_NAME = "data.csv";
+    public static final String FILE_NAME = "Data.csv";
 
 	public static void main(String[] args) throws Exception {
 		File file = new File(FILE_NAME);
