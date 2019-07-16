@@ -41,7 +41,7 @@ public class JsonController {
             return mapper.writeValueAsString(jsonSchema);
     }
 
-    @RequestMapping(value = "/Data", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
     ArrayList<Environment> getData(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
@@ -55,7 +55,7 @@ public class JsonController {
         return selectedData;
     }
 
-    @RequestMapping(value = "/Statistics", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "/statistics", method = RequestMethod.GET, produces="application/json")
     String getStatistics(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
             @RequestParam(value = "day", required = false, defaultValue = "0") ArrayList<String> dayString,
