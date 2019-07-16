@@ -20,12 +20,14 @@ public class ProgettoOopApplication {
      * @param args eventuali parametri passati dal CLI
      * @throws Exception dovuta al metodo statico getCSV
      */
+    public static final String FILE_NAME = "data.csv";
+
 	public static void main(String[] args) throws Exception {
-		File file = new File("data.csv");
+		File file = new File(FILE_NAME);
 		if(!file.exists()){
-			DownloadCSV.getCSV("data.csv");
+			DownloadCSV.getCSV(FILE_NAME);
 		}
-		EnvironmentCollection.environments = ParserCSV.parser("data.csv");
+		EnvironmentCollection.environments = ParserCSV.parser(FILE_NAME);
 		SpringApplication.run(ProgettoOopApplication.class, args);
 	}
 }

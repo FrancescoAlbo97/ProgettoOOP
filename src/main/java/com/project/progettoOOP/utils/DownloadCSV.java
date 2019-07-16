@@ -24,7 +24,6 @@ public class DownloadCSV {
     public static void getCSV(String fileName) throws IOException, JSONException {
 
         URLConnection openConnection = new URL("http://data.europa.eu/euodp/data/api/3/action/package_show?id=jrc-abcis-ig-2016").openConnection();
-        //openConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
         InputStream in = openConnection.getInputStream();
 
         String data = "";
@@ -64,11 +63,8 @@ public class DownloadCSV {
      * @throws Exception dovuta al metodo copy
      */
     private static void downloadFile(String url, String fileName) throws IOException {
-        File file = new File(fileName);
-        if (!file.exists()) {
-            try (InputStream in = URI.create(url).toURL().openStream()) {
-                Files.copy(in, Paths.get(fileName));
-            }
+        try (InputStream in = URI.create(url).toURL().openStream()) {
+            Files.copy(in, Paths.get(fileName));
         }
     }
 
