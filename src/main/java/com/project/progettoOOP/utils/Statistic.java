@@ -145,8 +145,10 @@ public class Statistic<T> {
         int count = 0;
         float sum = 0;
         for (Float item : arrayList) {
-            sum += item;
-            count++;
+            if (item != null){
+                sum += item;
+                count++;
+            }
         }
         return sum/count;
     }
@@ -161,8 +163,10 @@ public class Statistic<T> {
         int count = 0;
         float sum = 0;
         for (Float item : arrayList) {
-            sum += Math.pow(item - avg, 2);
-            count++;
+            if (item != null){
+                sum += Math.pow(item - avg, 2);
+                count++;
+            }
         }
         return (float) Math.pow(sum/count, 0.5);
     }
@@ -175,8 +179,10 @@ public class Statistic<T> {
     private float getMin(ArrayList<Float> arrayList) {
         float currentMin = arrayList.get(0);
         for (int i = 0; i < arrayList.size(); i++) {
-            if(arrayList.get(i) < currentMin){
-                currentMin = arrayList.get(i);
+            if (arrayList.get(i) != null){
+                if(arrayList.get(i) < currentMin){
+                    currentMin = arrayList.get(i);
+                }
             }
         }
         return currentMin;
@@ -190,8 +196,10 @@ public class Statistic<T> {
     private float getMax(ArrayList<Float> arrayList) {
         float currentMax = arrayList.get(0);
         for (int i = 0; i < arrayList.size(); i++) {
-            if(arrayList.get(i) > currentMax){
-                currentMax = arrayList.get(i);
+            if (arrayList.get(i) != null){
+                if(arrayList.get(i) > currentMax){
+                    currentMax = arrayList.get(i);
+                }
             }
         }
         return currentMax;
@@ -205,8 +213,10 @@ public class Statistic<T> {
     private float getSum(ArrayList<Float> arrayList) {
         float sum = 0;
         for (int i = 0; i < arrayList.size(); i++) {
-            sum += arrayList.get(i);
+            if (arrayList.get(i) != null){
+                sum += arrayList.get(i);
             }
+        }
         return sum;
     }
 
