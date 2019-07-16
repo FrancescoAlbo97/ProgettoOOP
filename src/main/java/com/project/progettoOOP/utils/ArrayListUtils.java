@@ -4,21 +4,35 @@ import java.util.ArrayList;
 
 public class ArrayListUtils<T>{
 
-    public ArrayList<T> and(ArrayList<T> itemsList1, ArrayList<T> itemsList2) {
+    public ArrayList<T> and(ArrayList<ArrayList<T>> itemsList) {
+
+        ArrayList<T> list = new ArrayList<>();
+        int length = itemsList.size();
+        for (int i = 0; i < length-1; i++){
+            for (T item1 : itemsList.get(i)){
+                for (T item2 : itemsList.get(i+1)) {
+                    if (item1.equals(item2)){
+                        list.add(item2);
+                        break;
+                    }
+                }
+            }
+            itemsList.get(i+1).clear();
+            for (T item : list){
+                itemsList.get(i+1).add(item);
+            }
+            list.clear();
+        }
+        return itemsList.get(length-1);
+    }
+
+    public ArrayList<T> or(ArrayList<ArrayList<T>> itemsList) {
         ArrayList<T> list = new ArrayList<T>();
-        for(T item1 : itemsList1) {
-            for (T item2 : itemsList2){
-                if (item1.equals(item2)) list.add(item1);
+        for (ArrayList<T> arrayList : itemsList){
+            for (T item : arrayList){
+                list.add(item);
             }
         }
         return list;
-    }
-
-    public ArrayList<T> or (ArrayList<T> itemsList1, ArrayList<T> itemsList2) {
-        ArrayList<T> list = new ArrayList<T>();
-        for (T item2 : itemsList2){
-            itemsList1.add(item2);
-        }
-        return itemsList1;
     }
 }

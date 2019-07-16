@@ -14,28 +14,28 @@ public class Filters {
         String field = (String) json.keys().next();
         if (field.contains("$or")) {
             ArrayListUtils<Environment> itemListUtil = new ArrayListUtils<>();
+            ArrayList<ArrayList<Environment>> itemArrayList = new ArrayList<>();
             ArrayList<Environment> itemList = new ArrayList<>();
             JSONArray jsonArray = json.getJSONArray(field);
-            for (int i = 0; i < jsonArray.length()-1 ; i++) {
-                if(json.getJSONArray(field).get(i) instanceof JSONObject && json.getJSONArray(field).get(i+1) instanceof JSONObject) {
-                    itemList = itemListUtil.or(getFilteredData(arrayList,jsonArray.getJSONObject(i)),getFilteredData(arrayList,jsonArray.getJSONObject(i+1)));
+            for (int i = 0; i < jsonArray.length() ; i++) {
+                if(json.getJSONArray(field).get(i) instanceof JSONObject) {
+                    itemArrayList.add(getFilteredData(arrayList,jsonArray.getJSONObject(i)));
                 }
             }
-            if(json.getJSONArray(field).get(0) instanceof JSONObject && itemList.isEmpty())
-                return getFilteredData(arrayList,jsonArray.getJSONObject(0));
-            else return itemList;
+            itemList = itemListUtil.or(itemArrayList);
+            return itemList;
         } else if (field.contains("$and")) {
             ArrayListUtils<Environment> itemListUtil = new ArrayListUtils<>();
+            ArrayList<ArrayList<Environment>> itemArrayList = new ArrayList<>();
             ArrayList<Environment> itemList = new ArrayList<>();
             JSONArray jsonArray = json.getJSONArray(field);
-            for (int i = 0; i < jsonArray.length()-1 ; i++) {
-                if(json.getJSONArray(field).get(i) instanceof JSONObject && json.getJSONArray(field).get(i+1) instanceof JSONObject) {
-                    itemList = itemListUtil.and(getFilteredData(arrayList,jsonArray.getJSONObject(i)),getFilteredData(arrayList,jsonArray.getJSONObject(i+1)));
+            for (int i = 0; i < jsonArray.length() ; i++) {
+                if(json.getJSONArray(field).get(i) instanceof JSONObject) {
+                    itemArrayList.add(getFilteredData(arrayList,jsonArray.getJSONObject(i)));
                 }
             }
-            if(json.getJSONArray(field).get(0) instanceof JSONObject && itemList.isEmpty())
-                return getFilteredData(arrayList,jsonArray.getJSONObject(0));
-            else return itemList;
+            itemList = itemListUtil.and(itemArrayList);
+            return itemList;
         } else {
             JSONObject newJson = json.getJSONObject(field);
             String operator = (String) newJson.keys().next();
