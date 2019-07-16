@@ -18,13 +18,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 @RestController
 public class JsonController {
 
     @RequestMapping(value = "/metadata", method = RequestMethod.GET, produces="application/json")
     String getMetadata() throws JsonProcessingException {
-
             ObjectMapper mapper = new ObjectMapper();
             JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper);
             JsonSchema jsonSchema = jsonSchemaGenerator.generateSchema(Environment.class);
@@ -64,7 +62,7 @@ public class JsonController {
     }
 
     @RequestMapping(value="/filter", method=RequestMethod.POST, produces="application/json")
-    public String getFilteredValues(
+    public ArrayList<Environment> getFilteredValues(
             @RequestBody(required = false) String jsonString) throws Exception {
         JSONObject json = null;
         ArrayList<Environment> result = null;
@@ -72,10 +70,24 @@ public class JsonController {
             json = new JSONObject(jsonString);
             result = Filters.getFilteredData(EnvironmentCollection.environments, json);
         }
-        ObjectMapper mapper = new ObjectMapper();
-        if(result != null) {
-            return mapper.writeValueAsString(result);
-        } else return mapper.writeValueAsString(EnvironmentCollection.environments);
+        if(result != null){
+            return result;
+        } else return EnvironmentCollection.environments;
+    }
+
+    @RequestMapping(value="/filter/statistics", method=RequestMethod.POST, produces="application/json")
+    public HashMap<String, Statistic<Environment>> getStatisticsOfFilteredValues(
+            @RequestBody(required = false) String jsonString) throws Exception {
+        JSONObject json = null;
+        ArrayList<Environment> result;
+        ArrayList<Environment> startList;
+        startList = getFilteredValues(jsonString);
+        String[] molecule = {"no", "no2", "nox", "so2", "o3", "co"};
+        json = new JSONObject(jsonString);
+        result = Filters.getFilteredData(startList, json);
+        HashMap<String, Statistic<Environment>> map;
+        map = Statistics.getFilteredStatistics(result, molecule);
+        return map;
     }
 
 }

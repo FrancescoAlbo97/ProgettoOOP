@@ -5,6 +5,8 @@ import com.project.progettoOOP.model.EnvironmentCollection;
 import com.project.progettoOOP.utils.ArrayListUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
@@ -58,8 +60,9 @@ public class Filters {
                 case "$gt":
                     double value = newJson.getDouble(operator);
                     return environmentCollection.filterField(field, operator, value);
+                default:
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid filter json format");
             }
         }
-        throw new Exception();
     }
 }

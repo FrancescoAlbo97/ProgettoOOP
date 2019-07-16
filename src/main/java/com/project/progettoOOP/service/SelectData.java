@@ -120,11 +120,15 @@ public class SelectData {
             String nullValue = null;
             Environment environment = new Environment(item.getMyDate(),nullValue,nullValue,nullValue,nullValue,nullValue,nullValue);
             for (int i=0; i < molecule.length; i++){
-                m1 = item.getClass().getMethod("get"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1),null);
-                Object value = m1.invoke(item);
-                if (!(value == null)){
-                    m2 = environment.getClass().getMethod( "set"+molecule[i].substring(0, 1).toUpperCase()+molecule[i].substring(1), Float.class);
-                    m2.invoke(environment, (Float) value);
+                try {
+                    m1 = item.getClass().getMethod("get" + molecule[i].substring(0, 1).toUpperCase() + molecule[i].substring(1), null);
+                    Object value = m1.invoke(item);
+                    if (!(value == null)) {
+                        m2 = environment.getClass().getMethod("set" + molecule[i].substring(0, 1).toUpperCase() + molecule[i].substring(1), Float.class);
+                        m2.invoke(environment, (Float) value);
+                    }
+                }catch (Exception e){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid molecule format, insert: \"no\", \"no2\", \"nox\", \"so2\", \"o3\", \"co\" ");
                 }
             }
             arrayList.add(environment);
