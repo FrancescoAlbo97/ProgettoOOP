@@ -44,21 +44,27 @@ public class Filters {
             EnvironmentCollection environmentCollection = new EnvironmentCollection(arrayList);
             switch (operator) {
                 case "$bt":
-                    double min = newJson.getJSONArray(operator).getDouble(0);
-                    double max = newJson.getJSONArray(operator).getDouble(1);
+                    Object min = newJson.getJSONArray(operator).get(0);
+                    Object max = newJson.getJSONArray(operator).get(1);
                     return environmentCollection.filterField(field, operator,  min, max);
                 case "$in":
                 case "$nin":
-                    double[] values = null;
-                    for(int i= 0; i < newJson.getJSONArray(operator).length(); i++) {
-                        values[i] = newJson.getJSONArray(operator).getDouble(i);
+                    ArrayList<Object> values = new ArrayList<>();
+                    try{
+                        JSONArray jsonArray = newJson.getJSONArray(operator);
+                        for(int i= 0; i < newJson.getJSONArray(operator).length(); i++) {
+                            values.add(newJson.getJSONArray(operator).get(i));
+                        }
+                        return environmentCollection.filterField(field, operator, values.toArray());
+                    }catch(Exception e) {
+                        Object obj = newJson.get(operator);
+                        return environmentCollection.filterField(field, operator, obj);
                     }
-                    return environmentCollection.filterField(field, operator, values);
                 case "$eq":
                 case "$not":
                 case "$lt":
                 case "$gt":
-                    double value = newJson.getDouble(operator);
+                    Object value = newJson.get(operator);
                     return environmentCollection.filterField(field, operator, value);
                 default:
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid filter json format");
