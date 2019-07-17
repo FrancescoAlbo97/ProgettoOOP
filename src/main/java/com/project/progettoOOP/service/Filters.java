@@ -47,21 +47,6 @@ public class Filters {
                     Object min = newJson.getJSONArray(operator).get(0);
                     Object max = newJson.getJSONArray(operator).get(1);
                     return environmentCollection.filterField(field, operator,  min, max);
-                case "$in":
-                case "$nin":
-                    ArrayList<Object> values = new ArrayList<>();
-                    try{
-                        JSONArray jsonArray = newJson.getJSONArray(operator);
-                        for(int i= 0; i < newJson.getJSONArray(operator).length(); i++) {
-                            values.add(newJson.getJSONArray(operator).get(i));
-                        }
-                        return environmentCollection.filterField(field, operator, values.toArray());
-                    }catch(Exception e) {
-                        Object obj = newJson.get(operator);
-                        return environmentCollection.filterField(field, operator, obj);
-                    }
-                case "$eq":
-                case "$not":
                 case "$lt":
                 case "$gt":
                     Object value = newJson.get(operator);

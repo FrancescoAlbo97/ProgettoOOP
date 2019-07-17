@@ -5,6 +5,7 @@ import com.project.progettoOOP.Filter;
 import com.project.progettoOOP.utils.FilterUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -56,7 +57,7 @@ public class EnvironmentCollection implements Filter<Environment, Object[]> {
      * @return La collezione di oggetti filtrata.
      */
     @Override
-    public ArrayList<Environment> filterField(String fieldName, String operator, Object... value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public ArrayList<Environment> filterField(String fieldName, String operator, Object... value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ParseException {
         return (ArrayList<Environment>) utils.select(this.getEnvironmentsList(), fieldName, operator, value);
     }
 }
