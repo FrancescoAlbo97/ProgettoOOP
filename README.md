@@ -85,8 +85,9 @@ si può osservare in figura che il risultato della rotta  **/statistics?day=1** 
 ![enter image description here](https://lh3.googleusercontent.com/GZbuENaOs8gBAC8Xuls13ihDQyl70pt9n0rJK6O-IaiX-9bjcqa-OOXDGchkciXpm7FFRP1R0Zo)
 #  UML
 ##  Class Diagram
-Fornisce una vista strutturale del sistema.I blocchi rappresentano i Package e all'interno ci sono le classi che vi  appartengono,ognuna con i propri metodi e attributi. 
-![enter image description here](https://lh3.googleusercontent.com/5hAwJ4YzWDqnE-kjFxgAuGK0PW4L42713RR_3-J3QZ42kkC5MCpHUY7QgPYvCb0j9LW0tgo0qkE)
+Fornisce una vista strutturale del sistema.I blocchi rappresentano i Package e all'interno ci sono le classi che vi  appartengono,ognuna con i propri metodi e attributi.
+
+
 
 ##  Use Case Diagram
 Spiega le funzioni che l'applicazione offre all'utente. 
