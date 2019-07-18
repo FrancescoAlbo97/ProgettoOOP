@@ -10,9 +10,10 @@ Sono dati provenienti  dal Osservatorio atmosferico CE situato in Ispra (Italia)
 # Come vengono restituiti i dati
  
 I dati vengono restituiti, grazie al servizio , come un  **JSON** , in particolare un array di oggetti dove ogni oggetto ha la seguente forma:
-**FOTOOOOOOOOOO METADATA**
-In particolare l'utente può vedere da cosa è formato ogni oggetto anche richiedendo i metadati attraverso la **rotta** -->**GET/metadata** come spiegato in seguito. 
 
+![enter image description here](Metadata.PNG)
+
+L'utente può vedere da cosa è formato ogni oggetto anche richiedendo i metadati attraverso la **rotta** -->**GET/metadata**.
 # Rotte dell'applicazione
 
 Sono le varie vie che l'applicazione offre affinché svolga correttamente i task assegnati.
