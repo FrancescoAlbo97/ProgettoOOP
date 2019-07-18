@@ -11,35 +11,38 @@ Sono dati provenienti  dal Osservatorio atmosferico CE situato in Ispra (Italia)
 
 Sono le varie vie che l'applicazione offre affinché svolga correttamente i task assegnati.
 Vengono gestite nel nostro progetto dal JSONController e l'utente può fare 2 tipi di richieste: GET e POST. 
-### GET 
+## GET 
 I dati vengono restituiti, grazie al servizio , come un  **JSON** , in particolare un array di oggetti.
 
 - L'utente può vedere da cosa è formato ogni oggetto chiedendo i metadati attraverso la rotta  **GET/metadata**.
 ![enter image description here](Metadata.PNG)
- - Per la visualizzazione di tutti i dati viene utilizzata la rotta **/data** FOTOOOOOOOOOO
+ - Per la visualizzazione di tutti i dati viene utilizzata la rotta **/data**,ovviamente nella foto abbiamo riportato solo una piccolissima parte dei dati(in totale ci all'incirca 50.000). 
+ ![enter image description here](EsempioData.PNG)
  - L'applicazione offre la rotta **/data?month=1,2,ecc&day=(1,2,ecc)&molecule=(no,no2,nox,so2,o3,co)  }** che permette di vedere solo dati relativi a determinati mesi,giorni o addirittura solo  molecole volute. Se nel  caso viene a mancare month,day o molecule l'applicazione considera che l'utente vuole vedere tutto.
- - **/statistics** rotta che permette di vedere le statistiche in generale.
- -  **/statistics?{month=(1, 2, ecc)&day=(1, 2, ecc) &molecule=(no, no2, nox, so2, o3, co )**:permette di vedere una statistica su un determinati mesi,giorni o addirittura per molecola. La mancanza di una dei parametri fa si che l'applicazione considera che deve fare la statistica su tutti i dati del dato mancante come si vede nell'esempio:**FOTOOOOOOOO**
-### POST 
+ 
+ ![enter image description here](DataMonthMolecule.PNG)
+ 
+ - **/statistics** rotta che permette di vedere le statistiche (media, minimo, massimo, dev. standard e somma) di ogni molecola su base annuale.
+ 
+ ![enter image description here](FotoStatistics.PNG)
+ 
+ -  **/statistics?{month=(1, 2, ecc)&day=(1, 2, ecc) &molecule=(no, no2, nox, so2, o3, co )**:permette di vedere una statistica su un determinati mesi,giorni o addirittura per molecola. Un esempio è la rotta **/statistics?month=1,2&day=1&molecule=no**:
 
+![enter image description here](FotoStatistica2.PNG)
+
+La mancanza di una dei parametri fa si che l'applicazione considera che deve fare la statistica su tutti i dati del dato mancante
+ -  **/statistics?day=3&month=2** restituisce le statistiche di tutte le molecole di 3 febbraio.
+ -  **/statistics?month=2&molecule=so2** restituisce le statistiche della molecola so2 su tutto febbraio.
+ -  **/statistics?day=2&molecule=so2** restituisce le statistiche della molecola so2 in base a valori del secondo giorno di tutti i mesi.
+ 
+Come richiesto dalle specifiche del progetto abbiamo implementato le statistiche precedenti però **NON abbiamo  realizzato la statistica COUNT**, anche se richiesta, perché non aveva senso per i nostri dati.
+ 
+## POST 
+Le rotte utilizzate per le richieste **POST** sono: 
  - **/filter** :rotta che mi permette di fare i filtri su tutti i dati del dataset.
- - **/filter/statistics** permette di avere statistiche su dati filtrati.
-##  Statistiche
-Come richiesto dalle specifiche del progetto abbiamo implementato varie statistiche però **NON abbiamo  realizzato la statistica COUNT**, anche se richiesta, perché non aveva senso per i nostri dati. 
-Vediamo alcuni esempi:
-
- -  **/statistics**:mostra le statistiche (media, minimo, massimo, dev. standard e somma) di ogni molecola di tutto l'anno:
-.![enter image description here](https://lh3.googleusercontent.com/NSdfXqfINXgjmkXJEzEtZgZg1VSNTKprBoCJRTYGe_goqo6gWLazHzI0AvwHgU93BcIor1OpVwQ)
- - **/statistics?month=1,2&day=1&molecule=no**  è un esempio di richiesta di statistica solo sulla molecola chiesta, nei mesi e giorni scelti dall'utente,
-
-![enter image description here](https://lh3.googleusercontent.com/1jYnXX0PuKahD5adRttHGxZR1WfZNn0_VJ2Q81U7tF0Jro4zcimaicYjdqfO9hR5d45P_WnTPG4)
+ - **/filter/statistics** permette di avere statistiche su dati filtrati. 
  
- ovviamente se nella richiesta manca un elemento considera tutto, per esempio:
-  --**/statistics?day=3&month=2** restituisce le statistiche di tutte le molecole di 3 febbraio.
- -- **/statistics?month=2&molecule=so2** restituisce le statistiche della molecola so2 di tutti i giorni di febbraio.
- -- **/statistics?day=2&molecule=so2** restituisce le statistiche della molecola so2 calcolate nel secondo giorno di ogni mese.
- 
-##  Filtri
+### Filtri
 Come richiesto dalle specifiche del progetto abbiamo analizzato anche i filtri attraverso l'implementazione di :
  -  operatori logici **AND** e **OR** 
  - operatori condizionali  **between, greater e lower**
