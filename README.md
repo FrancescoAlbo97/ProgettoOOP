@@ -102,20 +102,20 @@ Utilizzato per descrivere un'azione,ovvero una determinata sequenza di eventi, c
 L'applicazione ha i seguenti diagrammi di sequenza  per quanto riguarda le funzioni utilizzate nel **JSONController**:
 
 - **getMetadata**
-![enter image description here](https://lh3.googleusercontent.com/33YejiWIvlrl-KmWU61oTgXauZDx5OYZwozw0GTQHvhDFLAwFELUGgGxK0j9HmX0sXXe8oUo-C8)
+![enter image description here](6SequenceMetadataDiagram.PNG)
 
 - **getData** 
-![enter image description here](https://lh3.googleusercontent.com/yE5QckfFqrsHfep5WmSJVlfaE5rQmpzMn1Z2SGXZgseVyfcGG_NbG7cH9iIhZAy1MItxbXlOOFg)
+![enter image description here](1sequenceDataDiagram.PNG)
 
 - **getStatistics()** 
-![enter image description here](https://lh3.googleusercontent.com/NcwdhBRHx0YAbMUZ1sJMBPsDJHIXloBjMxZJLr3BciVgikAkD-dJHFcX3iaBGj68S5gkPYF0CQc)
+![enter image description here](5SequenceStatisticsDiagram.PNG)
 
 - **getFilteredValues()** 
-![enter image description here](https://lh3.googleusercontent.com/wKovX0PjntbzerA6zsTDhMjnahSp0QoXDIpYo5cNanzXUV0zyV5ePTOzxG1bcaIM1STT-8OJS3I)
+![enter image description here](3SequenceFilterDiagram.PNG)
 
 - **getStatisticsOfFilteredValues()** 
-![enter image description here](https://lh3.googleusercontent.com/dfhu5bWPbBk68Z7ewOejO6viKChSJLIpUUw1kFL3G__FUUfgXo6BBH2xIZHGYCgYgj4cwdLYgpU)
+![enter image description here](4sequencefilterstatisticsDiagram.PNG)
 
 - **Download and Parsing**
-![enter image description here](https://lh3.googleusercontent.com/EW4VTyOAvpFTtcL7xDzN3x9-tbc_N1o7B704mfVlI-Ur9bAykUiPvmq9ywCz_J13AjYdJlQ53pw)
+![enter image description here](2SequenceDownloadParsDiagram)
  
