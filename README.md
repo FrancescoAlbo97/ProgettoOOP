@@ -1,7 +1,7 @@
 # ProgettoOOP
 Progetto Esame Luglio 2019
 
-L'applicazione presente nella repository  permette di ottenere dati a partire da un dataset contenuto in un file CSV, offrendo all'utente la possibilità di avere statistiche su essi,filtrarli nel modo voluto e soprattutto **fornire  statistiche su di essi**.
+L'applicazione presente nella repository  permette di ottenere dati a partire da un dataset contenuto in un file CSV, offrendo all'utente la possibilità di avere statistiche su essi,filtrarli nel modo voluto e soprattutto **fornire  statistiche su qusti ultimi**.
 
 # Cosa rappresentano i dati
 
