@@ -105,7 +105,7 @@ L'applicazione ha i seguenti diagrammi di sequenza  per quanto riguarda le funzi
 ![enter image description here](6SequenceMetadataDiagram.PNG)
 
 - **getData** 
-![enter image description here](1sequenceDataDiagram.PNG)
+![enter image description here](1sequenzeDataDiagram.PNG)
 
 - **getStatistics()** 
 ![enter image description here](5SequenceStatisticsDiagram.PNG)
@@ -114,8 +114,8 @@ L'applicazione ha i seguenti diagrammi di sequenza  per quanto riguarda le funzi
 ![enter image description here](3SequenceFilterDiagram.PNG)
 
 - **getStatisticsOfFilteredValues()** 
-![enter image description here](4sequencefilterstatisticsDiagram.PNG)
+![enter image description here](4SequencefilterstatisticsDiagram.PNG)
 
 - **Download and Parsing**
-![enter image description here](2SequenceDownloadParsDiagram)
+![enter image description here](2SequenceDownloadParsDiagram.PNG)
  
