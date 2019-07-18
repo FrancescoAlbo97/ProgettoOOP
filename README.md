@@ -95,7 +95,7 @@ Spiega le funzioni che l'applicazione offre all'utente.
 
 ##  Activity Diagram
 Descrive le funzioni offerte dall'applicazione.  
-![enter image description here](https://lh3.googleusercontent.com/gIvHulTmOD52fPyxdKqlPsVTQOhldnx1cEW_4iEqNukHN0bINJLhaaeOyKvyW6FPcenlIy0RF6A)
+![enter image description here](ActivityDiagram.PNG)
 
 ##  Sequence Diagram
 Utilizzato per descrivere un'azione,ovvero una determinata sequenza di eventi, che portano al risultato richiesto dall'utente.  
