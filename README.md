@@ -1,6 +1,5 @@
 # ProgettoOOP
 Progetto Esame Luglio 2019
-# **ProgettoOOP**
 
 L'applicazione presente nella repository  permette di ottenere dati a partire da un dataset contenuto in un file CSV, offrendo all'utente la possibilità di avere statistiche su essi,filtrarli nel modo voluto e soprattutto **fornire  statistiche su di essi**.
 
@@ -86,28 +85,34 @@ si può osservare in figura che il risultato della rotta  **/statistics?day=1** 
 ![enter image description here](https://lh3.googleusercontent.com/GZbuENaOs8gBAC8Xuls13ihDQyl70pt9n0rJK6O-IaiX-9bjcqa-OOXDGchkciXpm7FFRP1R0Zo)
 #  UML
 ##  Class Diagram
-Fornisce una vista strutturale del sistema.I blocchi rappresentano i Package e all'interno ci sono le classi che vi  appartengono,ognuna con i propri metodi e attributi.
+Fornisce una vista strutturale del sistema.I blocchi rappresentano i Package e all'interno ci sono le classi che vi  appartengono,ognuna con i propri metodi e attributi. 
 ![enter image description here](https://lh3.googleusercontent.com/5hAwJ4YzWDqnE-kjFxgAuGK0PW4L42713RR_3-J3QZ42kkC5MCpHUY7QgPYvCb0j9LW0tgo0qkE)
 
 ##  Use Case Diagram
-Spiega le funzioni che l'applicazione offre all'utente.![enter image description here](https://lh3.googleusercontent.com/3kNi_pjaEpw2uyo19X58K_6_FzU0cpH569GkIX9UF2s_YBDy66vsqep30XE_rH5qC8pcZ06jg5s)
+Spiega le funzioni che l'applicazione offre all'utente. 
+![enter image description here](https://lh3.googleusercontent.com/3kNi_pjaEpw2uyo19X58K_6_FzU0cpH569GkIX9UF2s_YBDy66vsqep30XE_rH5qC8pcZ06jg5s)
+
 ##  Activity Diagram
 Descrive le funzioni offerte dall'applicazione.  
-  ![enter image description here](https://lh3.googleusercontent.com/gIvHulTmOD52fPyxdKqlPsVTQOhldnx1cEW_4iEqNukHN0bINJLhaaeOyKvyW6FPcenlIy0RF6A)
+![enter image description here](https://lh3.googleusercontent.com/gIvHulTmOD52fPyxdKqlPsVTQOhldnx1cEW_4iEqNukHN0bINJLhaaeOyKvyW6FPcenlIy0RF6A)
+
 ##  Sequence Diagram
 Utilizzato per descrivere un'azione,ovvero una determinata sequenza di eventi, che portano al risultato richiesto dall'utente.  
 L'applicazione ha i seguenti diagrammi di sequenza  per quanto riguarda le funzioni utilizzate nel **JSONController**:
 
-  - **getMetadata**
+- **getMetadata**
 ![enter image description here](https://lh3.googleusercontent.com/33YejiWIvlrl-KmWU61oTgXauZDx5OYZwozw0GTQHvhDFLAwFELUGgGxK0j9HmX0sXXe8oUo-C8)
 
-- **getData**
+- **getData** 
 ![enter image description here](https://lh3.googleusercontent.com/yE5QckfFqrsHfep5WmSJVlfaE5rQmpzMn1Z2SGXZgseVyfcGG_NbG7cH9iIhZAy1MItxbXlOOFg)
-- **getStatistics()**
+
+- **getStatistics()** 
 ![enter image description here](https://lh3.googleusercontent.com/NcwdhBRHx0YAbMUZ1sJMBPsDJHIXloBjMxZJLr3BciVgikAkD-dJHFcX3iaBGj68S5gkPYF0CQc)
-- **getFilteredValues()**
+
+- **getFilteredValues()** 
 ![enter image description here](https://lh3.googleusercontent.com/wKovX0PjntbzerA6zsTDhMjnahSp0QoXDIpYo5cNanzXUV0zyV5ePTOzxG1bcaIM1STT-8OJS3I)
-- **getStatisticsOfFilteredValues()**
+
+- **getStatisticsOfFilteredValues()** 
 ![enter image description here](https://lh3.googleusercontent.com/dfhu5bWPbBk68Z7ewOejO6viKChSJLIpUUw1kFL3G__FUUfgXo6BBH2xIZHGYCgYgj4cwdLYgpU)
 
 - **Download and Parsing**
