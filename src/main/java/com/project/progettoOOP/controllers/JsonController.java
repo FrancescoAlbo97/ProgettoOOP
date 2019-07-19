@@ -18,9 +18,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Controller dell'applicazione: è il cuore del''applicazione.Gestisce tutte le rotte dell'applicazione.
+ */
 @RestController
 public class JsonController {
-
+    /**
+     * Rotta che mostra i metadati di ogni oggetto presente nel dataset.
+     * @return Restituisce i metadati sotto forma di JSON.
+     * @throws JsonProcessingException dovuta ai metodi generateSchema e writeValueAsString
+     */
     @RequestMapping(value = "/metadata", method = RequestMethod.GET, produces="application/json")
     String getMetadata() throws JsonProcessingException {
             ObjectMapper mapper = new ObjectMapper();
@@ -29,6 +36,16 @@ public class JsonController {
             return mapper.writeValueAsString(jsonSchema);
     }
 
+    /**
+     * Rotta che mostra i dati sotto forma di JSON.
+     * @param monthString parametri preso dal URL.
+     * @param dayString parametri preso dal URL.
+     * @param molecule parametri preso dal URL.
+     * @return Ritorna i dati sotto forma di JSON.
+     * @throws NoSuchMethodException dovuto al  metodo selectByMolecule
+     * @throws IllegalAccessException dovuto al  metodo selectByMolecule
+     * @throws InvocationTargetException dovuto al  metodo selectByMolecule
+     */
     @RequestMapping(value = "/data", method = RequestMethod.GET, produces="application/json")
     ArrayList<Environment> getData(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
@@ -43,6 +60,17 @@ public class JsonController {
         return newData.getSelectedData();
     }
 
+    /**
+     * Rotta che permette di calcolare qualsiasi tipo di statistica sui dati.
+     * @param monthString parametri preso dal URL.
+     * @param dayString parametri preso dal URL.
+     * @param molecule parametri preso dal URL.
+     * @return Ritorna la statistica voluta.
+     * @throws NoSuchMethodException quando un metodo non viene trovato.
+     * @throws IllegalAccessException  viene lanciata quando un'applicazione prova
+     * a creare in modo riflessivo un'istanza
+     * @throws InvocationTargetException è un'eccezione controllata
+     */
     @RequestMapping(value = "/statistics", method = RequestMethod.GET, produces="application/json")
     HashMap<String, Statistic<Environment>> getStatistics(
             @RequestParam(value = "month", required = false, defaultValue = "0") ArrayList<String> monthString,
@@ -61,6 +89,12 @@ public class JsonController {
         return map;
     }
 
+    /**
+     *
+     * @param jsonString Filtri voluti dall'utente
+     * @return I dati filtrati
+     * @throws Exception eccezione generale
+     */
     @RequestMapping(value="/filter", method=RequestMethod.POST, produces="application/json")
     public ArrayList<Environment> getFilteredValues(
             @RequestBody(required = false) String jsonString) throws Exception {
@@ -75,6 +109,12 @@ public class JsonController {
         } else return EnvironmentCollection.environments;
     }
 
+    /**
+     *
+     * @param jsonString Filtri voluti dall'utente.
+     * @return statistiche sui dati precedentemente filtrati
+     * @throws Exception eccezione generale
+     */
     @RequestMapping(value="/filter/statistics", method=RequestMethod.POST, produces="application/json")
     public HashMap<String, Statistic<Environment>> getStatisticsOfFilteredValues(
             @RequestBody(required = false) String jsonString) throws Exception {

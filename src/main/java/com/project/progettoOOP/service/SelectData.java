@@ -10,32 +10,59 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Classe implementata per gestire i dati dell'array list
+ */
 public class SelectData {
 
     private ArrayList<Environment> environments;
     private ArrayList<Environment> selectedData;
 
+    /**
+     * Permette di prendere una collezione di dati.
+     * @return Ritorna la collezione di dati.
+     */
     public ArrayList<Environment> getEnvironments() {
         return environments;
     }
 
+    /**
+     * Permette di inserire una collezione
+     * @param environments collezione da inserire.
+     */
     public void setEnvironments(ArrayList<Environment> environments) {
         this.environments = environments;
     }
 
+    /**
+     * Permette di prendere una collezione di dati.
+     * @return Ritorna la collezione di dati.
+     */
     public ArrayList<Environment> getSelectedData() {
         return selectedData;
     }
-
+    /**
+     * Permette di inserire una collezione
+     * @param selectedData collezione da inserire passata come parametro.
+     */
     public void setSelectedData(ArrayList<Environment> selectedData) {
         this.selectedData = selectedData;
     }
 
+    /**
+     * Costruttore della classe
+     * @param environments Array di oggetti  passato come parametro.
+     */
     public SelectData(ArrayList<Environment> environments) {
         this.environments = environments;
         this.selectedData = new ArrayList<>();
     }
 
+    /**
+     * Verifica se il formato della data è giusto.
+     * @param monthString array di stringhe contenente i mesi.
+     * @param dayString array di stringhe contenente i giorni.
+     */
     public void checkDateFormat(ArrayList<String> monthString, ArrayList<String> dayString){
         if (monthString.get(0).equals("0")) {
             monthString.clear();
@@ -49,6 +76,12 @@ public class SelectData {
         }
     }
 
+    /**
+     * Funzione booleana che garantisce che ogni mese ha il giusto numero di giorni.
+     * @param month array di stringhe contenente i mesi.
+     * @param day array di stringhe contenente i giorni.
+     * @return falso nel caso i cui i numeri di giorni di un mese non sono inseriti correttamente,vero altrimenti.
+     */
     private boolean checkDateAndParse( ArrayList<String> month, ArrayList<String> day) {
         HashMap<Integer,ArrayList<Integer>> daysForMonths = new HashMap<>();
         for (int i = 0; i < month.size(); i++) {
@@ -98,6 +131,10 @@ public class SelectData {
         return true;
     }
 
+    /**
+     * Funzione che seleziona solo gli oggetti che rispettano i giorni e mesi scelti dal utente.
+     * @param daysForMonths
+     */
     private void selectDataByMonthAndDate( HashMap<Integer,ArrayList<Integer>> daysForMonths){
         for (Environment obj : environments) {
             for (Integer m : daysForMonths.keySet()){
@@ -112,6 +149,15 @@ public class SelectData {
         }
     }
 
+    /**
+     *
+     * @param selectedData collezione di oggetti
+     * @param molecule array di stringhe che rappresenta le molecole.
+     * @throws NoSuchMethodException quando un metodo non viene trovato.
+     * @throws InvocationTargetException è un'eccezione controllata
+     * @throws IllegalAccessException viene lanciata quando un'applicazione prova
+     * a creare in modo riflessivo un'istanza
+     */
     public void selectByMolecule(ArrayList<Environment> selectedData, String[] molecule) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
         Method m1 = null;
         Method m2 = null;

@@ -2,8 +2,16 @@ package com.project.progettoOOP.utils;
 
 import java.util.ArrayList;
 
+/**
+ * Classe che permette di implementare la logica AND e OR
+ * @param <T> parametro generico
+ */
 public class ArrayListUtils<T>{
-
+    /**
+     * implementa la logica AND
+     * @param itemsList un gruppo di insieme di oggetti
+     * @return un insieme di oggetti
+     */
     public ArrayList<T> and(ArrayList<ArrayList<T>> itemsList) {
 
         ArrayList<T> list = new ArrayList<>();
@@ -26,6 +34,11 @@ public class ArrayListUtils<T>{
         return itemsList.get(length-1);
     }
 
+    /**
+     * Implementa la logica OR
+     * @param itemsList un gruppo di insieme di oggetti
+     * @return un insieme di oggetti
+     */
     public ArrayList<T> or(ArrayList<ArrayList<T>> itemsList) {
         ArrayList<T> list = new ArrayList<T>();
         for (ArrayList<T> arrayList : itemsList){

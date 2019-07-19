@@ -10,6 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
+/**
+ * Classe che permette di filtrare i dati. Gli operatori visti sono "$and","$or","$lt","$gt" e "$bt" .
+ */
 public class Filters {
 
     public static ArrayList<Environment> getFilteredData(ArrayList<Environment> arrayList, JSONObject json) throws Exception {

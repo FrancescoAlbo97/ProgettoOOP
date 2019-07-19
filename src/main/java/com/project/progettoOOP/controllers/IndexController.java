@@ -5,7 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
+/**
+ * Classe che implementa il controller utilizzato per mostrare il frontend dell'applicazione all'utente
+ */
 @Controller
 @RequestMapping("/")
 public class IndexController {

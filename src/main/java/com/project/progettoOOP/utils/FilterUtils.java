@@ -7,9 +7,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
+/**
+ * Classe che permette di filtrare gli oggetti secondo i parametri specificati
+ * @param <T> Tipo generico
+ */
 public class FilterUtils<T> {
-
+    /**
+     * Metodo che determina per ciscun oggetto della collezione se deve essere incluso nella risposta,in base al filtro, oppure no.
+     * @param value Oggetto che viene considerato nel test
+     * @param operator Condizione del filtro
+     * @param th Oggetti che caratterizzano il filtro
+     * @return Un booleano che determina se l'oggetto deve essere tenuto o meno
+     */
     private static boolean check(Object value, String operator, Object... th) throws ParseException {
         if (th.length == 1 && th[0] instanceof Number && value instanceof Number) {
             Float thC = ((Number)th[0]).floatValue();
@@ -52,6 +61,15 @@ public class FilterUtils<T> {
         return false;
     }
 
+    /**
+     * Metodo che riceve l'intera collezione di oggetti ed il filtro e restituisce una collezione parziale con gli
+     * oggetti selezionati
+     * @param src L'intera collezione di oggetti
+     * @param fieldName Campo su cui opera il filtro
+     * @param operator Condizione del filtro
+     * @param value Oggetti che caratterizzano il filtro
+     * @return Collezione risultante
+     */
     public Collection<T> select(Collection<T> src, String fieldName, String operator, Object... value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ParseException {
         Collection<T> out = new ArrayList<T>();
         for(T item:src) {

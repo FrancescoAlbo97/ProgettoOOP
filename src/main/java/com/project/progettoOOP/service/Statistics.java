@@ -7,6 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Classe che permette di prendere le statistiche sui filtri fatti.
+ */
 public class Statistics {
 
     public static HashMap<String, Statistic<Environment>> getFilteredStatistics(ArrayList<Environment> arrayList, String[] molecule) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
