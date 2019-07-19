@@ -59,7 +59,7 @@ public class SelectData {
     }
 
     /**
-     * Verifica se il formato della data è giusto.
+     * Verifica se il formato della data è giusto, in caso contrario invia un'exception
      * @param monthString array di stringhe contenente i mesi.
      * @param dayString array di stringhe contenente i giorni.
      */
@@ -77,7 +77,7 @@ public class SelectData {
     }
 
     /**
-     * Funzione booleana che garantisce che ogni mese ha il giusto numero di giorni.
+     * Funzione booleana che controlla che ogni mese abbia il giusto numero di giorni.
      * @param month array di stringhe contenente i mesi.
      * @param day array di stringhe contenente i giorni.
      * @return falso nel caso i cui i numeri di giorni di un mese non sono inseriti correttamente,vero altrimenti.
@@ -132,7 +132,7 @@ public class SelectData {
     }
 
     /**
-     * Funzione che seleziona solo gli oggetti che rispettano i giorni e mesi scelti dal utente.
+     * Funzione che seleziona solo gli oggetti che rispettano i giorni e mesi scelti dall'utente.
      * @param daysForMonths
      */
     private void selectDataByMonthAndDate( HashMap<Integer,ArrayList<Integer>> daysForMonths){
@@ -150,7 +150,7 @@ public class SelectData {
     }
 
     /**
-     *
+     *Funzione che istanzia solo gli oggetti che rispettano le molecole richieste dall'utente, lasciando le altre a null
      * @param selectedData collezione di oggetti
      * @param molecule array di stringhe che rappresenta le molecole.
      * @throws NoSuchMethodException quando un metodo non viene trovato.
