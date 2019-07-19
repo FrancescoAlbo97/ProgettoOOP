@@ -1,3 +1,4 @@
+
 package com.project.progettoOOP.utils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +19,7 @@ public class FilterUtils<T> {
      * @param operator Condizione del filtro
      * @param th Oggetti che caratterizzano il filtro
      * @return Un booleano che determina se l'oggetto deve essere tenuto o meno
+     * @throws ParseException Dovuto al metodo parse.
      */
     private static boolean check(Object value, String operator, Object... th) throws ParseException {
         if (th.length == 1 && th[0] instanceof Number && value instanceof Number) {
@@ -69,6 +71,10 @@ public class FilterUtils<T> {
      * @param operator Condizione del filtro
      * @param value Oggetti che caratterizzano il filtro
      * @return Collezione risultante
+     * @throws NoSuchMethodException quando un metodo non viene trovato.
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException viene lanciata quando un'applicazione prova a creare in modo riflessivo un'istanza
+     * @throws ParseException dovuta al metodo check().
      */
     public Collection<T> select(Collection<T> src, String fieldName, String operator, Object... value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ParseException {
         Collection<T> out = new ArrayList<T>();
