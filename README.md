@@ -84,7 +84,7 @@ si può osservare, in figura, che il risultato della rotta  **/statistics** è d
 ##  UML
 ####  Class Diagram
 Fornisce una vista strutturale del sistema.I blocchi rappresentano i Package e all'interno ci sono le classi che vi  appartengono,ognuna con i propri metodi e attributi.
-![enter image description here](classdiagram2.png)
+![enter image description here](ClassDiagram.PNG)
 
 
 ####  Use Case Diagram
