@@ -14,7 +14,7 @@ Vengono gestite nel nostro progetto dal JSONController e l'utente può fare 2 ti
 ## GET 
 I dati vengono restituiti, grazie al servizio , come un  **JSON** , in particolare un array di oggetti.
 
-- L'utente può vedere da cosa è formato ogni oggetto chiedendo i metadati attraverso la rotta  **GET/metadata**.
+- L'utente può vedere da cosa è formato ogni oggetto chiedendo i metadati attraverso la rotta  **/metadata**.
 ![enter image description here](Metadata.PNG)
  - Per la visualizzazione di tutti i dati viene utilizzata la rotta **/data**,ovviamente nella foto abbiamo riportato solo una piccolissima parte dei dati(in totale ci sono all'incirca 50.000). 
  ![enter image description here](EsempioData.PNG)
@@ -35,7 +35,7 @@ La mancanza di una dei parametri fa si che l'applicazione considera che deve far
  -  **/statistics?month=2&molecule=so2** restituisce le statistiche della molecola so2 su tutto febbraio.
  -  **/statistics?day=2&molecule=so2** restituisce le statistiche della molecola so2 in base a valori del secondo giorno di tutti i mesi.
  
-Come richiesto dalle specifiche del progetto abbiamo implementato le statistiche precedenti però **NON abbiamo  realizzato la statistica COUNT**, anche se richiesta, perché non aveva senso per i nostri dati.
+Come richiesto dalle specifiche del progetto abbiamo implementato le statistiche precedenti però **NON abbiamo  realizzato la statistica COUNT**, anche se richiesta, perché non erano presenti valori ripetuti interessanti.
  
 ## POST 
 Le rotte utilizzate per le richieste **POST** sono: 
@@ -47,7 +47,7 @@ Come richiesto dalle specifiche del progetto abbiamo analizzato anche i filtri a
  -  operatori logici **AND** e **OR** 
  - operatori condizionali  **between, greater e lower**
 
-**NON abbiamo analizzato NOT , NIN, IN e EQUAL** a causa del tipo di dati contenuti nel Dataset (non avevano senso).
+**NON abbiamo analizzato NOT , NIN, IN e EQUAL** a causa del tipo di dati contenuti nel Dataset, infatti non c'erano stringhe da confrontare (solo float).
 La struttura del filtro è la seguente:
 			
 
