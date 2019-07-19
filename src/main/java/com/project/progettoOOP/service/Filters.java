@@ -14,7 +14,12 @@ import java.util.ArrayList;
  * Classe che permette di filtrare i dati. Gli operatori visti sono "$and","$or","$lt","$gt" e "$bt" .
  */
 public class Filters {
-
+    /**
+     * @param arrayList collezione di oggetti
+     * @param json  filtro
+     * @return una collezione di oggetti
+     * @throws Exception eccezione generale
+     */
     public static ArrayList<Environment> getFilteredData(ArrayList<Environment> arrayList, JSONObject json) throws Exception {
         String field = (String) json.keys().next();
         if (field.contains("$or")) {
