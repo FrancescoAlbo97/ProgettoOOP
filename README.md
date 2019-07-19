@@ -16,9 +16,9 @@ I dati vengono restituiti, grazie al servizio , come un  **JSON** , in particola
 
 - L'utente può vedere da cosa è formato ogni oggetto chiedendo i metadati attraverso la rotta  **GET/metadata**.
 ![enter image description here](Metadata.PNG)
- - Per la visualizzazione di tutti i dati viene utilizzata la rotta **/data**,ovviamente nella foto abbiamo riportato solo una piccolissima parte dei dati(in totale ci all'incirca 50.000). 
+ - Per la visualizzazione di tutti i dati viene utilizzata la rotta **/data**,ovviamente nella foto abbiamo riportato solo una piccolissima parte dei dati(in totale ci sono all'incirca 50.000). 
  ![enter image description here](EsempioData.PNG)
- - L'applicazione offre la rotta **/data?month=1,2,ecc&day=(1,2,ecc)&molecule=(no,no2,nox,so2,o3,co)  }** che permette di vedere solo dati relativi a determinati mesi,giorni o addirittura solo  molecole volute. Se nel  caso viene a mancare month,day o molecule l'applicazione considera che l'utente vuole vedere tutto.
+ - L'applicazione offre la rotta **/data?month=1,2,ecc&day=(1,2,ecc)&molecule=(no,no2,nox,so2,o3,co)  }** che permette di vedere solo dati relativi a determinati mesi,giorni o addirittura solo  molecole volute. Se nel  caso viene a mancare month,day o molecule l'applicazione considera che l'utente vuole vedere tutto.Nel esempio che segue abbiamo scelto la rotta **/data?month=1,2&molecule=no** che mostra i valori della molecola di **no** durante i mesi di gennaio e febbraio,ovviamente non abbiamo potutto rappresentarli tutti solo in parte:
  
  ![enter image description here](DataMonthMolecule.PNG)
  
