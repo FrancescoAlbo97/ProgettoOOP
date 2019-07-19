@@ -77,10 +77,10 @@ La struttura del filtro è la seguente:
 
 ##  Statistiche su Filtri
 L'applicazione offre anche la possibilità di calcolare le statistiche in base ai filtri chiesti dall'utente.
-Effettuare una richiesta POST sulla  rotta **/filter/statistics?day=1** equivale a richiedere le statistiche sulle molecole del primo giorno di ogni mese, su dati precedentemente filtrati a volontà del utente;
-si può osservare in figura che il risultato della rotta  **/statistics?day=1** è diverso da quello sui dati filtrati.
+Effettuare una richiesta POST sulla  rotta **/filter/statistics** equivale a richiedere le statistiche su dati precedentemente filtrati;
+si può osservare, in figura, che il risultato della rotta  **/statistics** è diverso da quello precedente.
 
-![enter image description here](https://lh3.googleusercontent.com/GZbuENaOs8gBAC8Xuls13ihDQyl70pt9n0rJK6O-IaiX-9bjcqa-OOXDGchkciXpm7FFRP1R0Zo)
+![enter image description here](ConSenzaFiltroStatistics.PNG)
 ##  UML
 ####  Class Diagram
 Fornisce una vista strutturale del sistema.I blocchi rappresentano i Package e all'interno ci sono le classi che vi  appartengono,ognuna con i propri metodi e attributi.
